@@ -93,6 +93,7 @@ export default {
         },
     },
     mounted() {
+        window.alert('Funcionalidade "Entrar com Google" e "Esqueceu senha?" em construção...')
         // Criar uma lista vazia no localstorage, caso esteja vazio
         if (localStorage.getItem('users') === null) {
             let users = []
