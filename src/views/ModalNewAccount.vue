@@ -64,7 +64,7 @@ export default {
           this.$toast.success('Conta criada com sucesso!')
         }
         if (!success) {
-          this.$toast.warning('E-mail já cadastrado.')
+          this.$toast.warning('E-mail já cadastrado.', {position: 'top-right'})
         }
       }
     },

@@ -16,8 +16,8 @@
             <button type="submit" class="btn btn-primary">Entrar</button>
         </login-form>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Criar conta</button>
-        <button class="btn btn-secondary" @click="google">Entrar com Google</button>
-        <router-link to="/">Esqueceu a senha?</router-link>
+        <button class="btn btn-secondary" @click="inProgress">Entrar com Google</button>
+        <router-link to="/" @click="inProgress">Esqueceu a senha?</router-link>
         <ModalNewAccount></ModalNewAccount>
     </div>
 </template>
@@ -41,25 +41,31 @@ export default {
         }
     },
     components: {
-    "login-form": Form,
-    "login-field": Field,
-    ModalNewAccount
-},
+        "login-form": Form,
+        "login-field": Field,
+        ModalNewAccount
+    },
     methods: {
         auth() {
+            console.log('go')
+            let confirm = cookies.get('logged')
             // Se usuário já logado, redireciona para template
-            if (cookies.get('logged') === 'true') {
-                this.$router.push('/users')
-            } else { //Caso contrário, segue para autenticar
+            if (confirm !== null) {
+                if (confirm.status === true) {
+                    this.$router.push('/users')
+                }
+            } 
+            if (confirm === null || confirm.status === false) { //Caso contrário, segue para autenticar
+                console.log('try')
                 this.$store.commit('auth/authUser', {...this.user})
                 // Se usuário for autenticado, haverá "{logged: true} nos cookies"
-                let cond = useCookies().cookies.get('logged')
-                if(cond === 'true') {
+                let newConfirm = cookies.get('logged')
+                if(newConfirm.status === true) {
                     this.$toast.success('Bem-vindo, usuário!')
                     // Direciona usuário para as funcionalidadesd a página
                     this.$router.push('/users')
                 }
-                if(cond === null) {
+                if(newConfirm === null) {
                     // Mostra mensagem referente ao tipo de erro
                     this.$toast.error(this.$store.state.auth.errorMsg)
                 }  
@@ -70,6 +76,9 @@ export default {
         cleanForm() {
             let form = document.getElementById('loginform')
             form.reset()
+        },
+        inProgress() {
+            window.alert('Funcionalidade "Entrar com Google" e "Esqueceu senha?" em construção...')
         }
     },
     computed: {
@@ -93,15 +102,17 @@ export default {
         },
     },
     mounted() {
-        window.alert('Funcionalidade "Entrar com Google" e "Esqueceu senha?" em construção...')
         // Criar uma lista vazia no localstorage, caso esteja vazio
         if (localStorage.getItem('users') === null) {
             let users = []
             localStorage.setItem('users', JSON.stringify(users))
         }
-        if (cookies.get('logged') === 'true') {
-            this.$toast.warning('Você já está logado!')
+        if (cookies.get('logged') !== null) {
+            if (cookies.get('logged').status === true) {
+                this.$toast.warning('Você já está logado!', {position: 'top-right'})
+            }
         }
+        
     }
 }
 </script>

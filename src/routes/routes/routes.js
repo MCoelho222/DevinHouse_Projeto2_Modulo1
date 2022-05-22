@@ -12,16 +12,16 @@ const routes = [
     {path: '/', component: UserLogin},
     {path: '/users', component: Template, beforeEnter: (to) => {
         let check = cookies.get('logged')
-        if (!check === 'true') {
+        if (!check.status === true) {
             return to.path = '/'
         }
         return true
     }, children: [
-        {path: '/lista-usuarios', component: ListaUsuarios},
-        {path: '/inventario', component: ListaItens},
-        {path: '/emprestar', component: EmprestaItem},
-        {path: '/cadastro-item', component: CadastroItem},
-        {path:'/cadastro-usuario', component: CadastroUsuario}
+        {path: 'lista-usuarios', component: ListaUsuarios},
+        {path: 'inventario', component: ListaItens},
+        {path: 'emprestar', component: EmprestaItem},
+        {path: 'cadastro-item', component: CadastroItem},
+        {path:'cadastro-usuario', component: CadastroUsuario}
     ]},
     
     
