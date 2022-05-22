@@ -1,67 +1,56 @@
 <template>
-<div class="side-bar" :style="sidebar">
-        <div class="sb-icon" v-show="toggleSideBar">
-            <img src="../../assets/InventaryLogonobg.png" alt="DevInventary Logo">
-        </div>
-        <div class="btn-div" v-show="toggleSideBar">
-            <div class="sb-btns">
-                <label for="">Geral</label>
-                <button type="button" class="btn btn-outline-info" @click="inventario">
-                <i class="fa-solid fa-chart-simple"></i> 
-                Inventário</button>
-                <button type="button" class="btn btn-outline-info" @click="sair">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                Sair</button>
-            </div>
-            <div class="sb-btns">
-                <label for="">Colaboradores</label>
-                <button type="button" class="btn btn-outline-info" @click="cadastraUser">
-                <i class="fa-solid fa-user-plus"></i>
-                Cadastrar</button>
-                <button type="button" class="btn btn-outline-info" @click="listaUsers">
-                <i class="fa-solid fa-list"></i> 
-                Listar</button>
-            </div>
-            <div class="sb-btns">
-                <label for="">Produtos</label>
-                <button type="button" class="btn btn-outline-info" @click="cadastraItens">
-                <i class="fa-solid fa-user-plus"></i>
-                Cadastrar</button>
-                <button type="button" class="btn btn-outline-info" @click="emprestaItens">
-                <i class="fa-solid fa-share-nodes"></i>
-                Emprestar</button>
-            </div>
-        </div>
-        <div id="toggler" style="display: flex; justify-content: end">
-            <label class="switch">
-                <input type="checkbox" @click="controlSideBar">
-                <span class="slider round"></span>
-            </label>
-        </div>
+  <div class="side-bar" :style="sidebar">
+    <div class="sb-icon" v-show="toggleSideBar">
+        <img src="../../assets/InventaryLogonobg.png" alt="DevInventary Logo">
     </div>
+
+    <div class="btns-div" v-show="toggleSideBar">
+
+        <div class="sb-btns">
+            <label for="">Geral</label>
+            <button type="button" class="btn btn-outline-info" @click="inventario">
+            <i class="fa-solid fa-chart-simple"></i> 
+            Inventário</button>
+            <button type="button" class="btn btn-outline-info" @click="sair">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            Sair</button>
+        </div>
+
+        <div class="sb-btns">
+            <label for="">Colaboradores</label>
+            <button type="button" class="btn btn-outline-info" @click="cadastraUser">
+            <i class="fa-solid fa-user-plus"></i>
+            Cadastrar</button>
+            <button type="button" class="btn btn-outline-info" @click="listaUsers">
+            <i class="fa-solid fa-list"></i> 
+            Listar</button>
+        </div>
+
+        <div class="sb-btns">
+            <label for="">Produtos</label>
+            <button type="button" class="btn btn-outline-info" @click="cadastraItens">
+            <i class="fa-solid fa-user-plus"></i>
+            Cadastrar</button>
+            <button type="button" class="btn btn-outline-info" @click="emprestaItens">
+            <i class="fa-solid fa-share-nodes"></i>
+            Emprestar</button>
+        </div>
+        
+    </div>
+    <div id="toggler" style="display: flex; justify-content: end">
+        <label class="switch">
+            <input type="checkbox" @click="controlSideBar">
+            <span class="slider round"></span>
+        </label>
+    </div>
+  </div>
 </template>
 <script>
-// import { useCookies } from 'vue3-cookies'
-// const cookies = useCookies().cookies
 export default {
-  data() {
-    return {
-      //sidebarWidth: 300,
-      //toggleSideBar: true,
-      //alreadyLogout: this.$store.getters['auth/alreadyLogout']
-      //logoutMsg: this.$store.state.auth.logoutMsg
-    }
-  },
   methods: {
+    // Hide/show sidebar
     controlSideBar() {
       this.$store.commit('template/controlSideBar')
-      // if (this.toggleSideBar) {
-      //   this.sidebarWidth = 70
-      //   this.toggleSideBar = false
-      // } else {
-      //   this.sidebarWidth = 300
-      //   this.toggleSideBar = true
-      // }
     },
     inventario() {
       this.$router.push('/users/inventario')
@@ -87,40 +76,43 @@ export default {
   computed: {
     sidebar() {
       return this.$store.getters['template/sidebar']
-      // return `width: ${this.sidebarWidth}px; height: 100vh; display: flex; flex-direction: column; justify-content: space-around`
     },
     toggleSideBar() {
       return this.$store.state.template.toggleSideBar
-    },
-    // logoutMsg() {
-      
-    // }
-  },
+    }
+  }
 }
 </script>
 <style scoped>
+
 label {
     color: rgb(7, 201, 239);
 }
+
 button {
     text-align: left;
     font-size: small;
 }
+
+/*Hide/show menu*/
 #toggler {
     position:absolute;
     bottom: 0;
     left: 0;
 }
+
+/*Cor do ícones no sidebar*/
 #sb-fa-icon {
     color: #2196F3;
 }
+
+/*Div geral do sidebar*/
 .side-bar {
     background-color:rgb(0, 56, 139);
     padding-right: 10px;
 }
-.btn-div {
-    
-}
+
+/*Div dos botões no sidebar*/
 .sb-btns {
     display: grid;
     text-align: left;
@@ -129,7 +121,7 @@ button {
     gap:5px;
     margin-bottom: 30px;
 }
-
+/*BOTÃO SWITCH */
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -157,7 +149,6 @@ button {
   -webkit-transition: .4s;
   transition: .4s;
 }
-
 .slider:before {
   position: absolute;
   content: "";
@@ -191,19 +182,6 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
-}
-
-
-
-.list-move,
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
 }
 
 </style>

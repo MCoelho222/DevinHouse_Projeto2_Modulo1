@@ -20,7 +20,6 @@ export default {
   computed: {
     main() {
       return this.$store.getters['template/main']
-      // return `width: calc(100% - ${this.sidebarWidth}px); height: 100vh;`
     },
   }
   

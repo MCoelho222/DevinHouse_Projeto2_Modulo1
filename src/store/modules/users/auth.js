@@ -7,9 +7,6 @@ export default {
         return {
             // Mensagem de erro para os inputs do login
             errorMsg: null,
-            //user: {},
-            //logout: false,
-            //alreadyLogout: false,
             logoutMsg: null
         }
     },
@@ -17,7 +14,6 @@ export default {
         // Autenticação do login
         // Parâmetro "user" enviado pelo commit do login
         authUser(state, user) {
-            console.log('teste')
             let match = 0 // Se > 0, usuário está cadastrado
             let users = JSON.parse(localStorage.getItem('users'))
             // Caso a lista users seja apagada do localstorage,
@@ -34,7 +30,6 @@ export default {
                         let user = {email: element.email, status: true}
                         cookies.set('logged', user)
                         state.user = user
-                        console.log('auth')
                         match += 1
                     }
                     // Erros
@@ -47,7 +42,6 @@ export default {
                         state.errorMsg = 'E-mail ou senha incorreta.'
                         match += 1
                     }
-                    
                 });
             }
             // Se não caiu nos casos anteriores, criar conta
@@ -60,7 +54,6 @@ export default {
             // por motivo de cookie apagado
             let check = cookies.get('logged')
             if (check !== null) {
-                console.log('111')
                 // Se houver um cookie, a chave status torna-se false
                 check.status = false
                 cookies.set('logged', check)
@@ -69,7 +62,6 @@ export default {
             }
             // Se o cookie foi apagado
             if (check === null) {
-                console.log('222')
                 // o state armazena o sinal
                 //state.alreadyLogout = true
                 state.logoutMsg = 'Você já saiu!'

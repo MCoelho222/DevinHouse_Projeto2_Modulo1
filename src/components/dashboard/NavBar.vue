@@ -1,33 +1,49 @@
 <template>
 <div class="navbar-div" style="display: flex; flex-direction: row; justify-content: space-between">
-<div id="title">
-<p> {{path}}</p>
-</div>
-<div id="user">
-<span>Marcelo Coelho</span>
-<vue-gravatar :email="user.email" :size="50" />
-</div>
+
+    <div id="title">
+        <p>{{path}}</p>
+    </div>
+
+    <div id="user">
+        <span>Marcelo Coelho</span>
+        <vue-gravatar :email="user.email" :size="50" />
+    </div>
+
 </div>
 </template>
 <script>
-//import md5 from "md5"
+import { useCookies } from 'vue3-cookies'
+
+const cookies = useCookies().cookies
 
 export default {
     data() {
         return {
-            user: {email: 'mcoelho2011@hotmail.com'}
+            user: {email: 'user@user.com'}
         }
     },
     computed: {
+        // Retorna o nome da rota atual
         path() {
-            let pathInfo = this.$router.currentRoute.value.fullPath
-            let currPath = pathInfo.split('/')[2]
-            return currPath.charAt(0).toUpperCase() + currPath.slice(1)
+            try {
+                let pathInfo = this.$router.currentRoute.value.fullPath
+                console.log(pathInfo)
+                let currPath = pathInfo.split('/')[2]
+                console.log(currPath)
+                return currPath.charAt(0).toUpperCase() + currPath.slice(1)
+            } catch (e) {
+                let pathInfo = this.$router.currentRoute.value.fullPath
+                console.log(pathInfo)
+                let currPath = pathInfo.split('/')[1]
+                console.log(currPath)
+                return currPath.charAt(0).toUpperCase() + currPath.slice(1)
+            }
+            
         },
-        // gravatar() {
-        //     const hash = md5(this.user.email.trim().toLowerCase());
-        //     return `https://www.gravatar.com/avatar/${hash}`;
-        // }
+    },
+    mounted() {
+        this.user = cookies.get('logged').email
     }
 }
 </script>
