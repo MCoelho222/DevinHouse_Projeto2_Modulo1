@@ -107,9 +107,14 @@ export default {
             let users = []
             localStorage.setItem('users', JSON.stringify(users))
         }
+        if (localStorage.getItem('itens') === null) {
+            let itens = []
+            localStorage.setItem('itens', JSON.stringify(itens))
+        }
         if (cookies.get('logged') !== null) {
             if (cookies.get('logged').status === true) {
                 this.$toast.warning('Você já está logado!', {position: 'top-right'})
+                this.$router.push('/users')
             }
         }
         

@@ -28,15 +28,11 @@ export default {
         path() {
             try {
                 let pathInfo = this.$router.currentRoute.value.fullPath
-                console.log(pathInfo)
                 let currPath = pathInfo.split('/')[2]
-                console.log(currPath)
                 return currPath.charAt(0).toUpperCase() + currPath.slice(1)
             } catch (e) {
                 let pathInfo = this.$router.currentRoute.value.fullPath
-                console.log(pathInfo)
                 let currPath = pathInfo.split('/')[1]
-                console.log(currPath)
                 return currPath.charAt(0).toUpperCase() + currPath.slice(1)
             }
             

@@ -3,7 +3,6 @@
     <proj-sidebar></proj-sidebar>
     <div class="router-template" :style="main">
       <proj-navbar></proj-navbar>
-      <router-link to="/">Back to Login</router-link>
       <router-view></router-view>
     </div>
   </div>
@@ -26,5 +25,8 @@ export default {
 };
 </script>
 <style scoped>
+.template {
+  background-color: aliceblue;
+}
 
 </style>
