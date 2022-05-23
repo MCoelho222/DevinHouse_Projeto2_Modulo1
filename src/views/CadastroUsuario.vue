@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-2">
                         <label class="form-label">Data de nascimento</label>
-                        <user type="date" class="form-control" name="birth" v-model="user.birthdate"/>
+                        <user-field type="date" class="form-control" name="birth" v-model="user.birthdate" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.birth" v-show="errors.birth"></span>
                     </div>
                 </div>
@@ -36,42 +36,42 @@
                     </div>
                     <div class="col-4">
                         <label class="form-label">E-mail</label>
-                        <user-field type="email" class="form-control" name="email" aria-describedby="emailHelp" v-model="user.email"/>
+                        <user-field type="email" class="form-control" name="email" v-model="user.email" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.email" v-show="errors.email"></span>
                     </div>
                     <div class="col-4">
-                        <label class="form-label">Data de nascimento</label>
-                        <user-field type="date" class="form-control" name="birth" v-model="user.birthdate"/>
-                        <span class="text-danger" v-text="errors.birth" v-show="errors.birth"></span>
+                        <label class="form-label">Cargo</label>
+                        <user-field type="text" class="form-control" name="job" v-model="user.job" :disabled="disabled"/>
+                        <span class="text-danger" v-text="errors.job" v-show="errors.job"></span>
                     </div>
                 </div>
                 <h5>Dados de endereço</h5>
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">CEP</label>
-                        <user-field type="text" class="form-control" name="cep" v-model="item.cep" :disabled="disabled"/>
+                        <user-field type="text" class="form-control" name="cep" v-model="user.cep" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.cep" v-show="errors.cep"></span>
                     </div>
                     <div class="col-6">
                         <label class="form-label">Cidade</label>
-                        <user-field type="text" class="form-control" name="city" v-model="item.city" :disabled="disabled"/>
+                        <user-field type="text" class="form-control" name="city" v-model="user.city" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.city" v-show="errors.city"></span>
                     </div>
                     <div class="col-2">
                         <label class="form-label">Estado</label>
-                        <user-field type="text" class="form-control" name="state" v-model="item.state" :disabled="disabled"/>
+                        <user-field type="text" class="form-control" name="state" v-model="user.state" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.state" v-show="errors.state"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-10">
                         <label class="form-label">Logradouro</label>
-                        <user-field type="text" class="form-control" name="street" v-model="item.street" :disabled="disabled"/>
+                        <user-field type="text" class="form-control" name="street" v-model="user.street" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.street" v-show="errors.street"></span>
                     </div>
                     <div class="col-2">
                         <label class="form-label">Número</label>
-                        <user-field type="text" class="form-control" name="num" v-model="item.num" :disabled="disabled"/>
+                        <user-field type="text" class="form-control" name="num" v-model="user.num" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.num" v-show="errors.num"></span>
                     </div>
                 </div>
@@ -83,12 +83,12 @@
                     </div>
                     <div class="col-4">
                         <label class="form-label">Bairro</label>
-                        <user-field type="text" class="form-control" name="zone" v-model="user.zone"/>
+                        <user-field type="text" class="form-control" name="zone" v-model="user.zone" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.zone" v-show="errors.zone"></span>
                     </div>
                     <div class="col-4">
                         <label class="form-label">Ponto de referência</label>
-                        <user-field type="text" class="form-control" name="ref" v-model="user.ref"/>
+                        <user-field type="text" class="form-control" name="ref" v-model="user.ref" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.ref" v-show="errors.ref"></span>
                     </div>
                 </div>
@@ -103,7 +103,11 @@ import { Form, Field } from 'vee-validate'
 import rules from '../validations/validateusers'
 //import axios from 'axios'
 
-rules
+rules.required
+rules.birthdate
+rules.checkcep
+rules.phonecheck
+rules.zipcodecheck
 
 
 export default {
@@ -120,7 +124,7 @@ export default {
                 phone: 'required|phonecheck',
                 email: 'required',
                 job: 'required',
-                cep: 'required|checkcep',
+                cep: 'required|checkzip',
                 city: 'required',
                 state: 'required',
                 street: 'required',
@@ -135,11 +139,15 @@ export default {
     },
     methods: {
         saveItem() {
-            if (localStorage.getItem('itens') === null) {
+            console.log(localStorage.getItem('registeredUsers'))
+            if (localStorage.getItem('registeredUsers') === null) {
                 let registeredUsers = []
                 registeredUsers.push(this.user)
+                console.log(this.user)
+                console.log(registeredUsers)
                 localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers))
             } else {
+                console.log('elsei')
                 let list = JSON.parse(localStorage.getItem('registeredUsers'))
                 list.push(this.user)
                 localStorage.setItem('registeredUsers', JSON.stringify(list))

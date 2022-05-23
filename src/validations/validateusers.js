@@ -39,15 +39,16 @@ export default {
             }
             return true
         }),
-        zipcodecheck: defineRule('checkcep', async value => {
+        zipcodecheck: defineRule('checkzip', async value => {
             //[0-9]{}
             let erro = false
             let regexp = /^[0-9]{8}$/
             if (!regexp.test(value)) {
                 return 'Invalid number'}
             if (regexp.test(value)) {
-               await this.$store.dispatch('viacep/checkCep', value).then(() => {
-                    if (!this.$store.state.viacep.status) {
+                let check = () => axios.get(`viacep.com.br/ws/${value}/json/`)
+               await check.then(() => {
+                    if (!check) {
                         erro = true
                     }
                 })
