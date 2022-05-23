@@ -24,7 +24,12 @@
                     </div>
                     <div class="col-3">
                         <label class="form-label">Categoria do item</label>
-                        <newitem-field type="text" class="form-control" name="categoria" v-model="item.categoria" :disabled="disabled"/>
+                        <!--<newitem-field type="text" class="form-control" name="categoria" v-model="item.categoria" :disabled="disabled"/>-->
+                        <newitem-field as="select" class="form-select" aria-label="Default select example" name="categoria" v-model="item.categoria" :disabled="disabled">
+                            <option value="eletronicos">Eletrônicos</option>
+                            <option value="moveis">Móvel</option>
+                            <option value="acessorios">Acessórios</option>
+                        </newitem-field>
                         <span class="text-danger" v-text="errors.categoria" v-show="errors.categoria"></span>
                     </div>
                 </div>
@@ -55,7 +60,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Descrição</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" :disabled="disabled"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" name="descricao" rows="3" v-model="item.descricao" :disabled="disabled"></textarea>
                 </div>
                 <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
                 <button type="submit" class="btn btn-primary">Salvar</button>
@@ -84,7 +89,7 @@ export default {
                 valor: 'required',
                 url: 'required',
                 marca: 'required',
-                modelo: 'required',
+                modelo: 'required'
             },
             item: {},
             disabled: true
@@ -94,12 +99,15 @@ export default {
         saveItem() {
             if (localStorage.getItem('itens') === null) {
                 let itens = []
+                itens.push(this.item)
                 localStorage.setItem('itens', JSON.stringify(itens))
             } else {
                 let list = JSON.parse(localStorage.getItem('itens'))
                 list.push(this.item)
                 localStorage.setItem('itens', JSON.stringify(list))
             }
+            let form = document.getElementById('newitem-form')
+            form.reset()
         },
         cleanForm() {
             let form = document.getElementById('newitem-form')
