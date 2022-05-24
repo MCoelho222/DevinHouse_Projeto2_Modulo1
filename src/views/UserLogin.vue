@@ -47,28 +47,36 @@ export default {
     },
     methods: {
         auth() {
-            console.log('go')
             let confirm = cookies.get('logged')
             // Se usuário já logado, redireciona para template
             if (confirm !== null) {
                 if (confirm.status === true) {
+                    this.$toast.warning('Você já está logado!')
                     this.$router.push('/users')
+                } else {
+                    // Se usuário estiver deslogado
+                    this.$store.commit('auth/authUser', {...this.user})
+                    // Se usuário for autenticado, "logged.status=true"
+                    let newConfirm = cookies.get('logged')
+                    if(newConfirm.status === true) {
+                        this.$toast.success('Bem-vindo, usuário!')
+                        // Direciona usuário para template
+                        this.$router.push('/users')
+                    }
                 }
             } 
-            if (confirm === null || confirm.status === false) { //Caso contrário, segue para autenticar
-                console.log('try')
+            if (confirm === null) { //Caso contrário, segue para autenticar
                 this.$store.commit('auth/authUser', {...this.user})
-                // Se usuário for autenticado, haverá "{logged: true} nos cookies"
-                let newConfirm = cookies.get('logged')
-                if(newConfirm.status === true) {
-                    this.$toast.success('Bem-vindo, usuário!')
-                    // Direciona usuário para as funcionalidadesd a página
-                    this.$router.push('/users')
-                }
-                if(newConfirm === null) {
-                    // Mostra mensagem referente ao tipo de erro
-                    this.$toast.error(this.$store.state.auth.errorMsg)
-                }  
+                let newConfirmB = cookies.get('logged')
+                    if(newConfirmB.status === true) {
+                        this.$toast.success('Bem-vindo, usuário!')
+                        // Direciona usuário para as funcionalidadesd a página
+                        this.$router.push('/users')
+                    }
+                    if(newConfirmB === null) {
+                        // Mostra mensagem referente ao tipo de erro
+                        this.$toast.error(this.$store.state.auth.errorMsg)
+                    }  
             }
             let form = document.getElementById('loginform')
             form.reset()

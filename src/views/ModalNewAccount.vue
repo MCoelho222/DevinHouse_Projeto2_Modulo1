@@ -10,6 +10,11 @@
         <div class="modal-body">
           <newuser-form id="registerform" :validation-schema="schema" v-slot="{ errors }">
               <div class="mb-3">
+                  <label class="form-label">Nome</label>
+                  <newuser-field type="text" class="form-control" name="name" v-model="user.name"/>
+                  <span class="text-danger" v-text="errors.name" v-show="errors.name"></span>
+              </div>
+              <div class="mb-3">
                   <label class="form-label">E-mail</label>
                   <newuser-field type="email" class="form-control" name="email" aria-describedby="emailHelp" v-model="user.email"/>
                   <span class="text-danger" v-text="errors.email" v-show="errors.email"></span>
@@ -45,8 +50,9 @@ export default {
     data() {
         return {
             schema: {
-                email: 'required',
-                password: 'required|password',
+              name: 'required',
+              email: 'required',
+              password: 'required|password',
             },
             user: {}
         }

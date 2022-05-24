@@ -27,7 +27,7 @@ export default {
                 users.forEach(element => {
                     // Auntentica se email e senha derem match
                     if (user.email === element.email && user.password === element.password) {
-                        let user = {email: element.email, status: true}
+                        let user = {name: element.name, email: element.email, status: true}
                         cookies.set('logged', user)
                         state.user = user
                         match += 1

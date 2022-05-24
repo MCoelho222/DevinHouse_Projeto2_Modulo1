@@ -9,11 +9,21 @@ import { useCookies } from 'vue3-cookies'
 const cookies = useCookies().cookies
 
 const routes = [
-    {path: '/', component: UserLogin},
+    {path: '/', component: UserLogin, beforeEnter: (to) => {
+        let check1 = cookies.get('logged')
+        if (check1 !== null) {
+            if(check1.status === true) {
+                return to.path = '/users'
+            }
+        }
+        return true
+    }},
     {path: '/users', component: Template, beforeEnter: (to) => {
-        let check = cookies.get('logged')
-        if (!check.status === true) {
-            return to.path = '/'
+        let check2 = cookies.get('logged')
+        if (check2 !== null) {
+            if (!check2.status === true) {
+                return to.path = '/'
+            }
         }
         return true
     }, children: [

@@ -6,8 +6,8 @@
     </div>
 
     <div id="user">
-        <span>Marcelo Coelho</span>
-        <vue-gravatar :email="user.email" :size="50" />
+        <span v-text="userName"></span>
+        <vue-gravatar class="gravatar" :email="user" :size="size"/>
     </div>
 
 </div>
@@ -20,7 +20,9 @@ const cookies = useCookies().cookies
 export default {
     data() {
         return {
-            user: {email: 'user@user.com'}
+            user: 'teste@teste.com',
+            size: 50,
+            userName: 'Username'
         }
     },
     computed: {
@@ -40,6 +42,8 @@ export default {
     },
     mounted() {
         this.user = cookies.get('logged').email
+        this.userName = cookies.get('logged').name
+
     }
 }
 </script>
@@ -59,5 +63,9 @@ p {
 span {
     color: rgb(7, 201, 239);
     margin-right: 4px;
+}
+
+.gravatar {
+    border-radius: 50%;
 }
 </style>
