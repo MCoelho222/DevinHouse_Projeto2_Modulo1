@@ -10,38 +10,38 @@
         </div>
         <div class="container">
             <h5>Dados pessoais</h5>
-            <user-form @submit="saveItem" id="newitem-form" :validation-schema="schema" v-slot="{ errors }">
+            <collab-form @submit="saveCollab" id="collab-form" :validation-schema="schema" v-slot="{ errors }">
                 <div class="row">
                     <div class="col-6">
                         <label class="form-label">Nome completo</label>
-                        <user-field type="text" class="form-control" name="name" v-model="user.name" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="name" v-model="collab.name" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.name" v-show="errors.name"></span>
                     </div>
                     <div class="col-4">
                         <label class="form-label">Gênero</label>
-                        <user-field type="text" class="form-control" name="genre" v-model="user.genre" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="genre" v-model="collab.genre" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.genre" v-show="errors.genre"></span>
                     </div>
                     <div class="col-2">
                         <label class="form-label">Data de nascimento</label>
-                        <user-field type="date" class="form-control" name="birth" v-model="user.birthdate" :disabled="disabled"/>
+                        <collab-field type="date" class="form-control" name="birth" v-model="collab.birthdate" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.birth" v-show="errors.birth"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Telefone</label>
-                        <user-field type="text" class="form-control" name="phone" v-model="user.phone" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="phone" v-model="collab.phone" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.phone" v-show="errors.phone"></span>
                     </div>
                     <div class="col-4">
                         <label class="form-label">E-mail</label>
-                        <user-field type="email" class="form-control" name="email" v-model="user.email" :disabled="disabled"/>
+                        <collab-field type="email" class="form-control" name="email" v-model="collab.email" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.email" v-show="errors.email"></span>
                     </div>
                     <div class="col-4">
                         <label class="form-label">Cargo</label>
-                        <user-field type="text" class="form-control" name="job" v-model="user.job" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="job" v-model="collab.job" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.job" v-show="errors.job"></span>
                     </div>
                 </div>
@@ -49,71 +49,75 @@
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">CEP</label>
-                        <user-field type="text" class="form-control" name="cep" v-model="user.cep" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="cep" v-model="getCepInfo.cep" :disabled="disabled" v-if="cepDone" />
+                        <collab-field type="text" class="form-control" name="cep" v-model="getCepInfo" :disabled="disabled" v-else />
                         <span class="text-danger" v-text="errors.cep" v-show="errors.cep"></span>
+                        <span class="text-danger" v-text="errorMsg" v-show="errorMsg"></span>
                     </div>
                     <div class="col-6">
                         <label class="form-label">Cidade</label>
-                        <user-field type="text" class="form-control" name="city" v-model="user.city" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="city" v-model="getCepInfo.localidade" :disabled="disabled"/>
+                       
                         <span class="text-danger" v-text="errors.city" v-show="errors.city"></span>
                     </div>
                     <div class="col-2">
                         <label class="form-label">Estado</label>
-                        <user-field type="text" class="form-control" name="state" v-model="user.state" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="state" v-model="getCepInfo.uf" :disabled="disabled" />
                         <span class="text-danger" v-text="errors.state" v-show="errors.state"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-10">
                         <label class="form-label">Logradouro</label>
-                        <user-field type="text" class="form-control" name="street" v-model="user.street" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="street" v-model="getCepInfo.logradouro" :disabled="disabled"/>
+                        
                         <span class="text-danger" v-text="errors.street" v-show="errors.street"></span>
                     </div>
                     <div class="col-2">
                         <label class="form-label">Número</label>
-                        <user-field type="text" class="form-control" name="num" v-model="user.num" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="num" v-model="collab.num" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.num" v-show="errors.num"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Complemento</label>
-                        <user-field type="text" class="form-control" name="complement" v-model="user.complement" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="complement" v-model="collab.complement" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.complement" v-show="errors.complement"></span>
                     </div>
                     <div class="col-4">
                         <label class="form-label">Bairro</label>
-                        <user-field type="text" class="form-control" name="zone" v-model="user.zone" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="zone" v-model="getCepInfo.bairro" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.zone" v-show="errors.zone"></span>
                     </div>
                     <div class="col-4">
                         <label class="form-label">Ponto de referência</label>
-                        <user-field type="text" class="form-control" name="ref" v-model="user.ref" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="ref" v-model="collab.ref" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.ref" v-show="errors.ref"></span>
                     </div>
                 </div>
                 <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
                 <button type="submit" class="btn btn-primary">Salvar</button>
-          </user-form>
+          </collab-form>
         </div>
+        {{cepDone}}
+        {{getCepInfo}}
     </div>
 </template>
 <script>
+
 import { Form, Field } from 'vee-validate'
-import rules from '../validations/validateusers'
-//import axios from 'axios'
+import rules from '../validations/validatecollab'
 
 rules.required
 rules.birthdate
-rules.checkcep
+rules.cepcheck
 rules.phonecheck
-rules.zipcodecheck
-
 
 export default {
     components: {
-    "user-form": Form,
-    "user-field": Field,
+    "collab-form": Form,
+    "collab-field": Field,
     },
     data() {
         return {
@@ -122,9 +126,9 @@ export default {
                 genre: 'required',
                 birth: 'required|birthcheck',
                 phone: 'required|phonecheck',
-                email: 'required',
+                email: 'required|emailcheck',
                 job: 'required',
-                cep: 'required|checkzip',
+                cep: 'required|cepcheck',
                 city: 'required',
                 state: 'required',
                 street: 'required',
@@ -133,30 +137,19 @@ export default {
                 zone: 'required',
                 ref: 'required'
             },
-            user: {},
-            disabled: true
+            collab: {},
+            cepInfo: {},
+            disabled: true,
         }
     },
     methods: {
-        saveItem() {
-            console.log(localStorage.getItem('registeredUsers'))
-            if (localStorage.getItem('registeredUsers') === null) {
-                let registeredUsers = []
-                registeredUsers.push(this.user)
-                console.log(this.user)
-                console.log(registeredUsers)
-                localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers))
-            } else {
-                console.log('elsei')
-                let list = JSON.parse(localStorage.getItem('registeredUsers'))
-                list.push(this.user)
-                localStorage.setItem('registeredUsers', JSON.stringify(list))
-            }
-            let form = document.getElementById('user-form')
+        saveCollab() {
+            this.$store.commit('collaborators/saveCollab', {...this.collab})
+            let form = document.getElementById('collab-form')
             form.reset()
         },
         cleanForm() {
-            let form = document.getElementById('user-form')
+            let form = document.getElementById('collab-form')
             form.reset() 
         },
         edit() {
@@ -166,11 +159,26 @@ export default {
                 this.disabled = true
             }
         }
-      
     },
     computed: {
-      
-    }
+        getCepInfo: {
+            get() {
+                let info = this.$store.getters['collaborators/sendInfo']
+                return info.length > 0 ? info[0] : ''
+            },
+            set(cep) {
+                if (cep.length == 8) {
+                    this.$store.dispatch('collaborators/cepInfo', cep)
+                }
+            }
+        },
+        cepDone() {
+            return this.$store.state.collaborators.cepDone
+        },
+        errorMsg() {
+            return this.$store.getters['collaborators/sendErrorMsg']
+        }
+    },
 }
 </script>
 <style scoped>
