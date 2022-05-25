@@ -5,13 +5,13 @@ export default {
     state() {
         return {
             saveSuccess: false,
-            sendInfo: [{}],
+            cepInfo: {},
             errorMsg: false,
         }
     },
     mutations: {
         saveCollab(state, collab) {
-            let addressInfo = state.sendInfo[0]
+            let addressInfo = state.cepInfo
             let cleanInfo = {}
             for (const [key, value] of Object.entries(addressInfo)) {
                 if (key !== 'complemento') {
@@ -50,23 +50,33 @@ export default {
     },
     actions: {
         cepInfo(context, cep) {
+
             axios.get(`https://viacep.com.br/ws/${cep}/json/`).then(response => {
+
                 if (response.data.erro === 'true') {
                     context.state.errorMsg = 'CEP inválido.'
                 } else {
-                    context.state.sendInfo.pop()
-                    context.state.sendInfo.push(response.data)
+
+                    let localidade = document.getElementById('localidade')
+                    let bairro = document.getElementById('bairro')
+                    let logradouro = document.getElementById('logradouro')
+                    let uf = document.getElementById('uf')
+                    localidade.value = response.data.localidade
+                    bairro.value = response.data.bairro
+                    logradouro.value = response.data.logradouro
+                    uf.value = response.data.uf
+                    
+                    context.state.cepInfo = response.data
                 }
             }).catch(() => {
+
                 context.state.errorMsg = 'CEP inválido.'
             })
-            setTimeout(() => {context.state.errorMsg = false}, 7000)
+
+            setTimeout(() => {context.state.errorMsg = false}, 5000)
         }
     },
     getters: {
-        sendInfo(state) {
-            return state.sendInfo
-        },
         sendErrorMsg(state) {
             return state.errorMsg
         },

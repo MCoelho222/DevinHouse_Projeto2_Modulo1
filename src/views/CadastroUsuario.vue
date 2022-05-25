@@ -64,22 +64,17 @@
                     </div>
                     <div class="col-6">
                         <label class="form-label">Cidade</label>
-                        <collab-field type="text" class="form-control" name="city" v-model="backCepInfo.localidade" :disabled="disabled"/>
-                       
-                        <span class="text-danger" v-text="errors.city" v-show="errors.city"></span>
+                        <collab-field id='localidade' type="text" class="form-control" name="city" readonly/>
                     </div>
                     <div class="col-2">
                         <label class="form-label">Estado</label>
-                        <collab-field type="text" class="form-control" name="state" v-model="backCepInfo.uf" :disabled="disabled" />
-                        <span class="text-danger" v-text="errors.state" v-show="errors.state"></span>
+                        <collab-field id='uf' type="text" class="form-control" name="state" readonly/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-10">
                         <label class="form-label">Logradouro</label>
-                        <collab-field type="text" class="form-control" name="street" v-model="backCepInfo.logradouro" :disabled="disabled"/>
-                        
-                        <span class="text-danger" v-text="errors.street" v-show="errors.street"></span>
+                        <collab-field id='logradouro' type="text" class="form-control" name="street" readonly/>
                     </div>
                     <div class="col-2">
                         <label class="form-label">Número</label>
@@ -95,8 +90,7 @@
                     </div>
                     <div class="col-4">
                         <label class="form-label">Bairro</label>
-                        <collab-field type="text" class="form-control" name="zone" v-model="backCepInfo.bairro" :disabled="disabled"/>
-                        <span class="text-danger" v-text="errors.zone" v-show="errors.zone"></span>
+                        <collab-field id='bairro' type="text" class="form-control" name="zone" readonly/>
                     </div>
                     <div class="col-4">
                         <label class="form-label">Ponto de referência</label>
@@ -132,12 +126,8 @@ export default {
                 email: 'required|emailcheck',
                 job: 'required',
                 cep: 'required',
-                city: 'required',
-                state: 'required',
-                street: 'required',
                 num: 'required',
                 complement: 'required',
-                zone: 'required',
                 ref: 'required'
             },
             collab: {},
@@ -169,9 +159,6 @@ export default {
         }
     },
     computed: {
-        backCepInfo() {
-            return this.$store.getters['collaborators/sendInfo'][0]
-        },
         errorMsg() {
             return this.$store.getters['collaborators/sendErrorMsg']
         }
