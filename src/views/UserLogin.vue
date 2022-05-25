@@ -15,7 +15,7 @@
             <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
             <button type="submit" class="btn btn-primary">Entrar</button>
         </login-form>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Criar conta</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newAccountModal">Criar conta</button>
         <button class="btn btn-secondary" @click="inProgress">Entrar com Google</button>
         <router-link to="/" @click="inProgress">Esqueceu a senha?</router-link>
         <ModalNewAccount></ModalNewAccount>

@@ -1,25 +1,23 @@
 <template>
-    <div class="template">
-        <div class="header" style="display: flex; flex-direction: row; justify-content: space-between">
-            <p>Preencha os campos para cadastrar</p>
-            <label class="switch">
-                <input type="checkbox" @click="edit">
-                <span class="slider round"></span>
-            </label>
-            <!--<button type="button" class="btn btn-primary btn-sm" @click="edit">Editar</button>-->
+<div class="container">
+  <div class="modal fade" id="collabModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Criar Conta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="container">
-            <h5>Dados pessoais</h5>
-            <collab-form @submit="saveCollab" id="collab-form" :validation-schema="schema" v-slot="{ errors }">
+        <div class="modal-body">
+            <collab-form id="collab-form" :validation-schema="schema" v-slot="{ errors }">
                 <div class="row">
                     <div class="col-6">
                         <label class="form-label">Nome completo</label>
-                        <collab-field type="text" class="form-control" name="name" v-model="collab.nome" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="name" v-model="collab.nome"/>
                         <span class="text-danger" v-text="errors.name" v-show="errors.name"></span>
                     </div>
                     <div class="col-3">
                         <label class="form-label">Gênero</label>
-                        <collab-field as="select" class="form-select" name="genre" v-model="collab.genero" :disabled="disabled" aria-label="Default select example">
+                        <collab-field as="select" class="form-select" name="genre" v-model="collab.genero" aria-label="Default select example">
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
                             <option value="Outro">Outro</option>
@@ -28,24 +26,24 @@
                     </div>
                     <div class="col-3">
                         <label class="form-label">Data de nascimento</label>
-                        <collab-field type="date" class="form-control" name="birth" v-model="collab.nascimento" :disabled="disabled"/>
+                        <collab-field type="date" class="form-control" name="birth" v-model="collab.nascimento"/>
                         <span class="text-danger" v-text="errors.birth" v-show="errors.birth"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Telefone</label>
-                        <collab-field type="text" class="form-control" name="phone" v-model="collab.telefone" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="phone" v-model="collab.telefone" />
                         <span class="text-danger" v-text="errors.phone" v-show="errors.phone"></span>
                     </div>
                     <div class="col-4">
                         <label class="form-label">E-mail</label>
-                        <collab-field type="email" class="form-control" name="email" v-model="collab.email" :disabled="disabled"/>
+                        <collab-field type="email" class="form-control" name="email" v-model="collab.email" />
                         <span class="text-danger" v-text="errors.email" v-show="errors.email"></span>
                     </div>
                     <div class="col-4">
                         <label class="form-label">Cargo</label>
-                        <collab-field as="select" class="form-select" name="job" v-model="collab.cargo" :disabled="disabled" aria-label="Default select example">
+                        <collab-field as="select" class="form-select" name="job" v-model="collab.cargo" aria-label="Default select example">
                             <option value="Front-end dev">Front-end dev</option>
                             <option value="Back-end dev">Back-end dev</option>
                             <option value="Fullstack dev">Fullstack dev</option>
@@ -58,7 +56,7 @@
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">CEP</label>
-                        <collab-field type="text" class="form-control" name="cep" v-model="cepNum" @change=getCepInfo :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="cep" v-model="cepNum" @input=getCepInfo />
                         <span class="text-danger" v-text="errors.cep" v-show="errors.cep"></span>
                         <span class="text-danger" v-text="errorMsg" v-show="errorMsg"></span>
                     </div>
@@ -78,14 +76,14 @@
                     </div>
                     <div class="col-2">
                         <label class="form-label">Número</label>
-                        <collab-field type="text" class="form-control" name="num" v-model="collab.numero" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="num" v-model="collab.numero" />
                         <span class="text-danger" v-text="errors.num" v-show="errors.num"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Complemento</label>
-                        <collab-field type="text" class="form-control" name="complement" v-model="collab.complemento" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="complement" v-model="collab.complemento"/>
                         <span class="text-danger" v-text="errors.complement" v-show="errors.complement"></span>
                     </div>
                     <div class="col-4">
@@ -94,28 +92,36 @@
                     </div>
                     <div class="col-4">
                         <label class="form-label">Ponto de referência</label>
-                        <collab-field type="text" class="form-control" name="ref" v-model="collab.referencia" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="ref" v-model="collab.referencia"/>
                         <span class="text-danger" v-text="errors.ref" v-show="errors.ref"></span>
                     </div>
                 </div>
-                <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
-                <button type="submit" class="btn btn-primary">Salvar</button>
-          </collab-form>
+                <!-- <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button> -->
+            </collab-form>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="cleanForm">Close</button>
+          <button type="button" class="btn btn-primary" @click="saveCollab">Submit</button>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 </template>
 <script>
-
 import { Form, Field } from 'vee-validate'
 import rules from '../validations/validatecollab'
 
 rules
 
 export default {
+    props: {},
     components: {
         "collab-form": Form,
         "collab-field": Field,
     },
+    
     data() {
         return {
             schema: {
@@ -132,7 +138,23 @@ export default {
             },
             collab: {},
             disabled: true,
-            cepNum: null
+            cepNum: null,
+        }
+    },
+    watch: {
+        getSelectedId(newId, oldId) {
+            let newSelectedId = newId
+            if(newId == null){
+                newSelectedId = oldId
+            }
+            let collabs = JSON.parse(localStorage.getItem('collaborators'))
+            collabs.forEach(item => {
+                if (item.id == newSelectedId) {
+                    this.collab = item
+                    this.cepNum = item.cep
+                    this.getCepInfo()
+                }
+            })
         }
     },
     methods: {
@@ -149,6 +171,8 @@ export default {
         cleanForm() {
             let form = document.getElementById('collab-form')
             form.reset() 
+            this.collab = {}
+            this.cepNum = null
         },
         edit() {
             if (this.disabled) {
@@ -161,82 +185,12 @@ export default {
     computed: {
         errorMsg() {
             return this.$store.getters['collaborators/sendErrorMsg']
+        },
+        getSelectedId(){
+            let selectedId = this.$store.getters['collaborators/sendSelectedId']
+            return selectedId
         }
     },
 }
+
 </script>
-<style scoped>
-p {
-    font-size: 1.5em;
-}
-.template {
-    padding: 50px;
-}
-.container
- {
-     text-align: left;
-     background-color: white;
-     padding: 30px;
- }
-
-
- .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-</style>

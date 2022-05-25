@@ -7,9 +7,14 @@ export default {
             saveSuccess: false,
             cepInfo: {},
             errorMsg: false,
+            collabs: [],
+            selectedId: null
         }
     },
     mutations: {
+        setSelectedId(state, value) {
+            state.selectedId = value
+        },
         saveCollab(state, collab) {
             let addressInfo = state.cepInfo
             let cleanInfo = {}
@@ -30,9 +35,15 @@ export default {
                 } else {
                     let collabList = JSON.parse(localStorage.getItem('collaborators'))
                     let already = false
-                    collabList.forEach((item) => {
-                        if (item.nome === collabObj.nome) {
+                    collabList.forEach(item => {
+                        let firstName = item.nome.split(' ')[0]
+                        let collabFirstName = collabObj.nome.split(' ')[0]
+                        if (item.nascimento === collabObj.nascimento && firstName === collabFirstName) {
                             already = true
+                            let index = collabList.indexOf(item)
+                            item = {...collabObj}
+                            collabList[index] = item
+                            localStorage.setItem('collaborators', JSON.stringify(collabList))
                         }
                     })
                     if (!already) {
@@ -41,12 +52,19 @@ export default {
                         collabList.push(collabObj)
                         localStorage.setItem('collaborators', JSON.stringify(collabList))
                         state.saveSuccess = true
-                    }  
+                    } 
                 }
             } catch(e) {
                 state.saveSuccess = false
             }
         },
+        getCollab(state) {
+            let collabs = JSON.parse(localStorage.getItem('collaborators'))
+            if (collabs !== null) {
+                state.collabs = collabs
+            }
+
+        }
     },
     actions: {
         cepInfo(context, cep) {
@@ -80,5 +98,11 @@ export default {
         sendErrorMsg(state) {
             return state.errorMsg
         },
+        sendCollabs(state) {
+            return state.collabs
+        },
+        sendSelectedId(state) {
+            return state.selectedId
+        }
     }
 }
