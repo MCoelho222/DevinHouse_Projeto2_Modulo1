@@ -9,8 +9,11 @@
 </template>
 <script>
 
-import SideBar from "../components/dashboard/SideBar";
+import SideBar from "../components/dashboard/SideBar"
 import NavBar from '../components/dashboard/NavBar'
+import { useCookies } from 'vue3-cookies'
+
+const cookies = useCookies().cookies
 export default {
   components: {
     "proj-sidebar": SideBar,
@@ -20,9 +23,16 @@ export default {
     main() {
       return this.$store.getters['template/main']
     },
+  },
+  mounted() {
+    if (cookies.get('logged') !== null) {
+            if (cookies.get('logged').status === true) {
+                this.$toast.info('Você está logado!', {position: 'top-right'})
+            }
+        }
   }
   
-};
+}
 </script>
 <style scoped>
 .template {

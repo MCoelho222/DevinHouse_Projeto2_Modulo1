@@ -9,14 +9,18 @@ export default {
             sendInfo: [],
             errorMsg: false,
             cepDone: false
-
         }
     },
     mutations: {
         saveCollab(state, collab) {
             let addressInfo = state.sendInfo[0]
-            let collabObj = {...collab, ...addressInfo}
-            console.log(state.sendInfo)
+            let cleanInfo = {}
+            for (const [key, value] of Object.entries(addressInfo)) {
+                if (key !== 'complemento') {
+                    cleanInfo[key] = value
+                }
+            }
+            let collabObj = {...collab, ...cleanInfo}
             try {
                 state.success = false
                 if (localStorage.getItem('collaborators') === null) {
@@ -39,9 +43,7 @@ export default {
                         collabList.push(collabObj)
                         localStorage.setItem('collaborators', JSON.stringify(collabList))
                         state.registerSuccess = true
-                        
-                    }
-                    
+                    }  
                 }
             } catch(e) {
                 state.registerSuccess = false
@@ -49,12 +51,15 @@ export default {
             state.cepDone = false
             state.sendInfo = []
         },
+        setCepDoneFalse(state) {
+            console.log('passado')
+            state.cepDone = false
+            state.sendInfo = []
+        }
     },
     actions: {
         cepInfo(context, cep) {
-            
             axios.get(`https://viacep.com.br/ws/${cep}/json/`).then(response => {
-                
                 if (response.data.erro === 'true') {
                     context.state.errorMsg = 'CEP inválido.'
                 } else {
@@ -66,7 +71,6 @@ export default {
             })
             setTimeout(() => {context.state.errorMsg = false}, 3000)
         }
-
     },
     getters: {
         sendInfo(state) {
@@ -75,6 +79,5 @@ export default {
         sendErrorMsg(state) {
             return state.errorMsg
         },
-    
     }
 }

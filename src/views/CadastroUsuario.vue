@@ -14,24 +14,28 @@
                 <div class="row">
                     <div class="col-6">
                         <label class="form-label">Nome completo</label>
-                        <collab-field type="text" class="form-control" name="name" v-model="collab.name" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="name" v-model="collab.nome" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.name" v-show="errors.name"></span>
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <label class="form-label">Gênero</label>
-                        <collab-field type="text" class="form-control" name="genre" v-model="collab.genre" :disabled="disabled"/>
+                        <collab-field as="select" class="form-select" name="genre" v-model="collab.genero" :disabled="disabled" aria-label="Default select example">
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Outro">Outro</option>
+                        </collab-field>
                         <span class="text-danger" v-text="errors.genre" v-show="errors.genre"></span>
                     </div>
-                    <div class="col-2">
+                    <div class="col-3">
                         <label class="form-label">Data de nascimento</label>
-                        <collab-field type="date" class="form-control" name="birth" v-model="collab.birthdate" :disabled="disabled"/>
+                        <collab-field type="date" class="form-control" name="birth" v-model="collab.nascimento" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.birth" v-show="errors.birth"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Telefone</label>
-                        <collab-field type="text" class="form-control" name="phone" v-model="collab.phone" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="phone" v-model="collab.telefone" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.phone" v-show="errors.phone"></span>
                     </div>
                     <div class="col-4">
@@ -41,7 +45,12 @@
                     </div>
                     <div class="col-4">
                         <label class="form-label">Cargo</label>
-                        <collab-field type="text" class="form-control" name="job" v-model="collab.job" :disabled="disabled"/>
+                        <collab-field as="select" class="form-select" name="job" v-model="collab.cargo" :disabled="disabled" aria-label="Default select example">
+                            <option value="Front-end dev">Front-end dev</option>
+                            <option value="Back-end dev">Back-end dev</option>
+                            <option value="Fullstack dev">Fullstack dev</option>
+                            <option value="DevOps">DevOps</option>
+                        </collab-field>
                         <span class="text-danger" v-text="errors.job" v-show="errors.job"></span>
                     </div>
                 </div>
@@ -75,14 +84,14 @@
                     </div>
                     <div class="col-2">
                         <label class="form-label">Número</label>
-                        <collab-field type="text" class="form-control" name="num" v-model="collab.num" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="num" v-model="collab.numero" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.num" v-show="errors.num"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">Complemento</label>
-                        <collab-field type="text" class="form-control" name="complement" v-model="collab.complement" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="complement" v-model="collab.complemento" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.complement" v-show="errors.complement"></span>
                     </div>
                     <div class="col-4">
@@ -92,7 +101,7 @@
                     </div>
                     <div class="col-4">
                         <label class="form-label">Ponto de referência</label>
-                        <collab-field type="text" class="form-control" name="ref" v-model="collab.ref" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="ref" v-model="collab.referencia" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.ref" v-show="errors.ref"></span>
                     </div>
                 </div>
@@ -109,10 +118,7 @@
 import { Form, Field } from 'vee-validate'
 import rules from '../validations/validatecollab'
 
-rules.required
-rules.birthdate
-rules.cepcheck
-rules.phonecheck
+rules
 
 export default {
     components: {
@@ -122,13 +128,13 @@ export default {
     data() {
         return {
             schema: {
-                name: 'required',
+                name: 'required|namecheck',
                 genre: 'required',
                 birth: 'required|birthcheck',
                 phone: 'required|phonecheck',
                 email: 'required|emailcheck',
                 job: 'required',
-                cep: 'required|cepcheck',
+                cep: 'required',
                 city: 'required',
                 state: 'required',
                 street: 'required',
@@ -138,7 +144,6 @@ export default {
                 ref: 'required'
             },
             collab: {},
-            cepInfo: {},
             disabled: true,
         }
     },
@@ -167,8 +172,17 @@ export default {
                 return info.length > 0 ? info[0] : ''
             },
             set(cep) {
-                if (cep.length == 8) {
+                if (cep.length < 8) {
+                    this.$store.commit('collaborators/setCepDoneFalse')
+                }
+                if (cep.length >= 8 && cep.split('-').length == 1) {
+                    this.$store.commit('collaborators/setCepDoneFalse')
                     this.$store.dispatch('collaborators/cepInfo', cep)
+                }
+                if (cep.length > 8 && cep.split('-').length == 2) {
+                    this.$store.commit('collaborators/setCepDoneFalse')
+                    let newNum = cep.split('-')[0] + cep.split('-')[1]
+                    this.$store.dispatch('collaborators/cepInfo', newNum)
                 }
             }
         },

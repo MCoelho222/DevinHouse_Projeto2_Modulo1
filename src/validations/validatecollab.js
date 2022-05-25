@@ -7,11 +7,16 @@ export default {
             }
             return true
         }),
-        emailcheck: defineRule ('emailcheck', value => {
-            //[a-z]{}
+        emailcheck: defineRule ('emailcheck', email => {
             let regexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-            if (!regexp.test(value)) {
+            if (!regexp.test(email)) {
                 return 'Email inválido.'
+            }
+            return true
+        }),
+        namecheck: defineRule('namecheck', name => {
+            if (name.split(' ').length < 2) {
+                return 'Informe o nome completo'
             }
             return true
         }),
@@ -40,30 +45,30 @@ export default {
             }
             return true
         }),
-        cepcheck: defineRule('cepcheck', async value => {
-            //[0-9]{}
-            //let erro = false
-            // let regexp = /^[0-9]{5}-[0-9]{3}$/
-            // if (!regexp.test(value) || value.length > 9) {
-            //     return 'Número inválido'
-            // }
+        // cepcheck: defineRule('cepcheck', async value => {
+        //     //[0-9]{}
+        //     //let erro = false
+        //     // let regexp = /^[0-9]{5}-[0-9]{3}$/
+        //     // if (!regexp.test(value) || value.length > 9) {
+        //     //     return 'Número inválido'
+        //     // }
             
-            if (value.length > 9) {
-                return 'Número inválido'
-            }
-            return true
-            // if (regexp.test(value)) {
-            //     console.log('passei')
-            //     console.log(value)
-            //     let check = axios.get(`viacep.com.br/ws/${value}/json/`)
-            //     await check.then(() => {
-            //         if (!check) {
-            //             erro = true
-            //         }
-            //     })
-            // }
-            // return erro === true ?  'CEP inválido' : true
-        }),
+        //     if (value.length > 9) {
+        //         return 'Número inválido'
+        //     }
+        //     return true
+        //     // if (regexp.test(value)) {
+        //     //     console.log('passei')
+        //     //     console.log(value)
+        //     //     let check = axios.get(`viacep.com.br/ws/${value}/json/`)
+        //     //     await check.then(() => {
+        //     //         if (!check) {
+        //     //             erro = true
+        //     //         }
+        //     //     })
+        //     // }
+        //     // return erro === true ?  'CEP inválido' : true
+        // }),
         phonecheck: defineRule('phonecheck', value => {
             //[0-9]{}
             let regexp = /^[0-9]{2}[0-9]{9}$/

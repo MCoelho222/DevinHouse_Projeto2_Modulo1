@@ -51,7 +51,7 @@ export default {
             // Se usuário já logado, redireciona para template
             if (confirm !== null) {
                 if (confirm.status === true) {
-                    this.$toast.warning('Você já está logado!')
+                    this.$toast.info('Você já está logado!')
                     this.$router.push('/users')
                 } else {
                     // Se usuário estiver deslogado
@@ -59,7 +59,8 @@ export default {
                     // Se usuário for autenticado, "logged.status=true"
                     let newConfirm = cookies.get('logged')
                     if(newConfirm.status === true) {
-                        this.$toast.success('Bem-vindo, usuário!')
+                        let name = newConfirm.name.split(' ')[0]
+                        this.$toast.success(`Bem-vindo, ${name}`)
                         // Direciona usuário para template
                         this.$router.push('/users')
                     }
@@ -121,8 +122,8 @@ export default {
         }
         if (cookies.get('logged') !== null) {
             if (cookies.get('logged').status === true) {
-                this.$toast.warning('Você já está logado!', {position: 'top-right'})
                 this.$router.push('/users')
+                this.$toast.success('Você já está logado!', {position: 'top-right'})
             }
         }
         
