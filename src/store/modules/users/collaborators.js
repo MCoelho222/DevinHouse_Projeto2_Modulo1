@@ -4,11 +4,9 @@ export default {
     namespaced: true,
     state() {
         return {
-            registerSuccess: false,
-            collaborators: null,
-            sendInfo: [],
+            saveSuccess: false,
+            sendInfo: [{}],
             errorMsg: false,
-            cepDone: false
         }
     },
     mutations: {
@@ -22,40 +20,33 @@ export default {
             }
             let collabObj = {...collab, ...cleanInfo}
             try {
-                state.success = false
+                state.saveSuccess = false
                 if (localStorage.getItem('collaborators') === null) {
                     let collaborators = []
-                    collab.id = 1
+                    collabObj.id = 1
                     collaborators.push(collabObj)
                     localStorage.setItem('collaborators', JSON.stringify(collaborators))
-                    state.registerSuccess = true
+                    state.saveSuccess = true
                 } else {
                     let collabList = JSON.parse(localStorage.getItem('collaborators'))
                     let already = false
                     collabList.forEach((item) => {
-                        if (item.email === collabObj.email) {
+                        if (item.nome === collabObj.nome) {
                             already = true
                         }
                     })
                     if (!already) {
                         let index = collabList.length + 1
-                        collab.id = index
+                        collabObj.id = index
                         collabList.push(collabObj)
                         localStorage.setItem('collaborators', JSON.stringify(collabList))
-                        state.registerSuccess = true
+                        state.saveSuccess = true
                     }  
                 }
             } catch(e) {
-                state.registerSuccess = false
+                state.saveSuccess = false
             }
-            state.cepDone = false
-            state.sendInfo = []
         },
-        setCepDoneFalse(state) {
-            console.log('passado')
-            state.cepDone = false
-            state.sendInfo = []
-        }
     },
     actions: {
         cepInfo(context, cep) {
@@ -63,13 +54,13 @@ export default {
                 if (response.data.erro === 'true') {
                     context.state.errorMsg = 'CEP inválido.'
                 } else {
+                    context.state.sendInfo.pop()
                     context.state.sendInfo.push(response.data)
-                    context.state.cepDone = true
                 }
             }).catch(() => {
                 context.state.errorMsg = 'CEP inválido.'
             })
-            setTimeout(() => {context.state.errorMsg = false}, 3000)
+            setTimeout(() => {context.state.errorMsg = false}, 7000)
         }
     },
     getters: {

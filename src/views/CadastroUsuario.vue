@@ -58,27 +58,26 @@
                 <div class="row">
                     <div class="col-4">
                         <label class="form-label">CEP</label>
-                        <collab-field type="text" class="form-control" name="cep" v-model="getCepInfo.cep" :disabled="disabled" v-if="cepDone" />
-                        <collab-field type="text" class="form-control" name="cep" v-model="getCepInfo" :disabled="disabled" v-else />
+                        <collab-field type="text" class="form-control" name="cep" v-model="cepNum" @change=getCepInfo :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.cep" v-show="errors.cep"></span>
                         <span class="text-danger" v-text="errorMsg" v-show="errorMsg"></span>
                     </div>
                     <div class="col-6">
                         <label class="form-label">Cidade</label>
-                        <collab-field type="text" class="form-control" name="city" v-model="getCepInfo.localidade" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="city" v-model="backCepInfo.localidade" :disabled="disabled"/>
                        
                         <span class="text-danger" v-text="errors.city" v-show="errors.city"></span>
                     </div>
                     <div class="col-2">
                         <label class="form-label">Estado</label>
-                        <collab-field type="text" class="form-control" name="state" v-model="getCepInfo.uf" :disabled="disabled" />
+                        <collab-field type="text" class="form-control" name="state" v-model="backCepInfo.uf" :disabled="disabled" />
                         <span class="text-danger" v-text="errors.state" v-show="errors.state"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-10">
                         <label class="form-label">Logradouro</label>
-                        <collab-field type="text" class="form-control" name="street" v-model="getCepInfo.logradouro" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="street" v-model="backCepInfo.logradouro" :disabled="disabled"/>
                         
                         <span class="text-danger" v-text="errors.street" v-show="errors.street"></span>
                     </div>
@@ -96,7 +95,7 @@
                     </div>
                     <div class="col-4">
                         <label class="form-label">Bairro</label>
-                        <collab-field type="text" class="form-control" name="zone" v-model="getCepInfo.bairro" :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="zone" v-model="backCepInfo.bairro" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.zone" v-show="errors.zone"></span>
                     </div>
                     <div class="col-4">
@@ -109,8 +108,6 @@
                 <button type="submit" class="btn btn-primary">Salvar</button>
           </collab-form>
         </div>
-        {{cepDone}}
-        {{getCepInfo}}
     </div>
 </template>
 <script>
@@ -145,9 +142,15 @@ export default {
             },
             collab: {},
             disabled: true,
+            cepNum: null
         }
     },
     methods: {
+        getCepInfo() {
+            if(this.cepNum.length >= 8) {
+                this.$store.dispatch('collaborators/cepInfo', this.cepNum)
+            }
+        },
         saveCollab() {
             this.$store.commit('collaborators/saveCollab', {...this.collab})
             let form = document.getElementById('collab-form')
@@ -166,28 +169,8 @@ export default {
         }
     },
     computed: {
-        getCepInfo: {
-            get() {
-                let info = this.$store.getters['collaborators/sendInfo']
-                return info.length > 0 ? info[0] : ''
-            },
-            set(cep) {
-                if (cep.length < 8) {
-                    this.$store.commit('collaborators/setCepDoneFalse')
-                }
-                if (cep.length >= 8 && cep.split('-').length == 1) {
-                    this.$store.commit('collaborators/setCepDoneFalse')
-                    this.$store.dispatch('collaborators/cepInfo', cep)
-                }
-                if (cep.length > 8 && cep.split('-').length == 2) {
-                    this.$store.commit('collaborators/setCepDoneFalse')
-                    let newNum = cep.split('-')[0] + cep.split('-')[1]
-                    this.$store.dispatch('collaborators/cepInfo', newNum)
-                }
-            }
-        },
-        cepDone() {
-            return this.$store.state.collaborators.cepDone
+        backCepInfo() {
+            return this.$store.getters['collaborators/sendInfo'][0]
         },
         errorMsg() {
             return this.$store.getters['collaborators/sendErrorMsg']
