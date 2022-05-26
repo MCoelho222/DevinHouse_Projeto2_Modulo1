@@ -1,28 +1,33 @@
 <template>
 <div class="container">
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Criar Conta</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Editar Conta</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <newitem-form id="newitem-form" :validation-schema="schema" v-slot="{ errors }">
+          <editItem-form id="editItem-form" :validation-schema="schema" v-slot="{ errors }">
                 <div class="row">
                     <div class="col-3">
                         <label class="form-label">Código de patrimônio</label>
-                        <newitem-field type="text" class="form-control" name="patrimonio" v-model="item.patrimonio"/>
+                        <editItem-field type="text" class="form-control" name="patrimonio" v-model="item.patrimonio"/>
                         <span class="text-danger" v-text="errors.patrimonio" v-show="errors.patrimonio"></span>
                     </div>
                     <div class="col-6">
                         <label class="form-label">Título do item</label>
-                        <newitem-field type="text" class="form-control" name="titulo" v-model="item.titulo"/>
+                        <editItem-field type="text" class="form-control" name="titulo" v-model="item.titulo"/>
                         <span class="text-danger" v-text="errors.titulo" v-show="errors.titulo"></span>
                     </div>
                     <div class="col-3">
                         <label class="form-label">Categoria do item</label>
-                        <newitem-field type="text" class="form-control" name="categoria" v-model="item.categoria"/>
+                        <!-- <editItem-field type="text" class="form-control" name="categoria" v-model="item.categoria"/> -->
+                        <editItem-field as="select" class="form-select" aria-label="Default select example" name="categoria" v-model="item.categoria">
+                            <option value="eletronicos">Eletrônicos</option>
+                            <option value="moveis">Móvel</option>
+                            <option value="acessorios">Acessórios</option>
+                        </editItem-field>
                         <span class="text-danger" v-text="errors.categoria" v-show="errors.categoria"></span>
                     </div>
                 </div>
@@ -30,38 +35,37 @@
                 <div class="row">
                     <div class="col-3">
                         <label class="form-label">Valor R$</label>
-                        <newitem-field type="text" class="form-control" name="valor" v-model="item.valor"/>
+                        <editItem-field type="text" class="form-control" name="valor" v-model="item.valor"/>
                         <span class="text-danger" v-text="errors.valor" v-show="errors.valor"></span>
                     </div>
                     <div class="col-9">
                         <label class="form-label">URL do produto</label>
-                        <newitem-field type="text" class="form-control" name="url" v-model="item.url"/>
+                        <editItem-field type="text" class="form-control" name="url" v-model="item.url"/>
                         <span class="text-danger" v-text="errors.url" v-show="errors.url"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <label class="form-label">Marca</label>
-                        <newitem-field type="text" class="form-control" name="marca" v-model="item.marca"/>
+                        <editItem-field type="text" class="form-control" name="marca" v-model="item.marca"/>
                         <span class="text-danger" v-text="errors.marca" v-show="errors.marca"></span>
                     </div>
                     <div class="col-6">
                         <label class="form-label">Modelo</label>
-                        <newitem-field type="text" class="form-control" name="modelo" v-model="item.modelo"/>
+                        <editItem-field type="text" class="form-control" name="modelo" v-model="item.modelo"/>
                         <span class="text-danger" v-text="errors.modelo" v-show="errors.modelo"></span>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Descrição</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="item.descricao"></textarea>
                 </div>
-                <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
-                <!--<button type="submit" class="btn btn-primary">Salvar</button>-->
-          </newitem-form>
+          </editItem-form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="saveEdit">Salvar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="saveItem">Salvar</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="delItem">Deletar item</button>
         </div>
       </div>
     </div>
@@ -69,8 +73,53 @@
 </div>
 </template>
 <script>
+import { Form, Field } from 'vee-validate'
+import rules from '../validations/validateitens'
+
+rules
+
 export default {
-    
+    components: {
+    "editItem-form": Form,
+    "editItem-field": Field,
+    },
+    data() {
+        return {
+            schema: {
+                patrimonio: 'required|patrimonycheck',
+                titulo: 'required',
+                categoria: 'required',
+                valor: 'required|pricecheck',
+                url: 'required|urlcheck',
+                marca: 'required',
+                modelo: 'required'
+            },
+            item: {},
+        }
+    },
+    methods: {
+        saveItem() {
+            this.$store.commit('itens/saveItem', this.item)
+            let form = document.getElementById('editItem-form')
+            form.reset()
+        },
+        delItem() {
+          console.log(this.item)
+          this.$store.commit('itens/delItem', this.item.patrimonio)
+        },
+    },
+    watch: {
+      edit(item) {
+        this.item = item
+      }
+    },
+    computed: {
+      edit() {
+        return this.$store.getters['itens/sendItemToEdit']
+      }
+      
+    }
+
 }
 
 </script>
