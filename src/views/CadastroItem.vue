@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-3">
                         <label class="form-label">Código de patrimônio</label>
-                        <newitem-field type="text" class="form-control" name="patrimonio" v-model="item.patrimonio" :disabled="disabled"/>
+                        <newitem-field type="text" class="form-control" name="patrimonio" v-model="item.patrimonio" :disabled="disabled" placeholder="XX9999-999"/>
                         <span class="text-danger" v-text="errors.patrimonio" v-show="errors.patrimonio"></span>
                     </div>
                     <div class="col-6">
@@ -37,7 +37,7 @@
                 <div class="row">
                     <div class="col-3">
                         <label class="form-label">Valor R$</label>
-                        <newitem-field type="text" class="form-control" name="valor" v-model="item.valor" :disabled="disabled"/>
+                        <newitem-field type="text" class="form-control" name="valor" v-model="item.valor" :disabled="disabled" placeholder="9999,99" />
                         <span class="text-danger" v-text="errors.valor" v-show="errors.valor"></span>
                     </div>
                     <div class="col-9">
@@ -70,9 +70,9 @@
 </template>
 <script>
 import { Form, Field } from 'vee-validate'
-import rules from '../validations/validateusers'
+import rules from '../validations/validateitens'
 
-rules.required
+rules
 
 
 export default {
@@ -83,11 +83,11 @@ export default {
     data() {
         return {
             schema: {
-                patrimonio: 'required',
+                patrimonio: 'required|patrimonycheck',
                 titulo: 'required',
                 categoria: 'required',
-                valor: 'required',
-                url: 'required',
+                valor: 'required|pricecheck',
+                url: 'required|urlcheck',
                 marca: 'required',
                 modelo: 'required'
             },
