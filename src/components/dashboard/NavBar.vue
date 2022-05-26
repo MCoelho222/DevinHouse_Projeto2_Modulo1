@@ -1,5 +1,5 @@
 <template>
-<div class="navbar-div" style="display: flex; flex-direction: row; justify-content: space-between">
+<div class="navbar-div">
 
     <div id="title">
         <p>{{path}}</p>
@@ -49,9 +49,14 @@ export default {
 </script>
 <style scoped>
 .navbar-div {
+    position: sticky;
+    top: 0;
     padding-left: 20px;
     padding-right: 20px;
     background-color:rgb(0, 56, 139);
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between;
 }
 p {
     color: rgb(7, 201, 239);

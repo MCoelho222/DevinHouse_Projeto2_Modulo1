@@ -108,8 +108,10 @@ button {
 
 /*Div geral do sidebar*/
 .side-bar {
-    background-color:rgb(0, 56, 139);
-    padding-right: 10px;
+  position: sticky;
+  top: 0;
+  background-color:rgb(0, 56, 139);
+  padding-right: 10px;
 }
 
 /*Div dos botões no sidebar*/
