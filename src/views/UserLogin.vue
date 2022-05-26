@@ -63,6 +63,8 @@ export default {
                         this.$toast.success(`Bem-vindo, ${name}`)
                         // Direciona usuário para template
                         this.$router.push('/users')
+                    } else {
+                        this.$toast.error(this.$store.state.auth.errorMsg)
                     }
                 }
             } 
