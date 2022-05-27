@@ -1,23 +1,53 @@
 <template>
-    <div class="container center_div">
-    <router-link to="/users">Voltar</router-link>
-        <login-form id="loginform" @submit="auth" :validation-schema="schema" v-slot="{ errors }">
-            <div class="mb-3">
-                <label class="form-label">Email address</label>
-                <login-field type="email" class="form-control" name="email" v-model="user.email"/>
-                <span class="text-danger" v-text="errors.email" v-show="showMailError"></span>
+    <div>
+        <div class="row">
+
+            <div class="col-7">
+                <div class="container">
+                    <img id="inventory-img" src="../assets/loginimg.png" alt="Inventário">
+                </div>
+                <div class="lab365">
+                    <img id="lab365-img" src="../assets/lab365logo.png" alt="LAB365">
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <login-field type="password" class="form-control" name="password" v-model="user.password"/>
-                <span class="text-danger" v-text="errors.password" v-show="showPassError"></span>
+
+            <div class="col-5">
+                <div class="container">
+                    <div class="criar-conta">
+                        <span>Não possui uma conta?</span>
+                        <button 
+                        class="btn btn-outline-info" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#newAccountModal">
+                        Criar conta</button>
+                    </div>
+                    <div class="form">
+                        <h2>Login</h2>
+                        <login-form id="loginform" @submit="auth" :validation-schema="schema" v-slot="{ errors }">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <login-field type="email" class="form-control" name="email" v-model="user.email"/>
+                                <span class="text-danger" v-text="errors.email" v-show="showMailError"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Senha</label>
+                                <login-field type="password" class="form-control" name="password" v-model="user.password"/>
+                                <span class="text-danger" v-text="errors.password" v-show="showPassError"></span>
+                            </div>
+                            <button class="btn btn-outline-info" type="button" @click="cleanForm">Limpar</button>
+                            <button type="submit" class="btn btn-primary">Entrar</button>
+                        </login-form>
+                        <div class="alternative">
+                            <button id="google" class="btn btn-outline-info" @click="inProgress">Entrar com Google</button>
+                            <p><router-link to="/" @click="inProgress">Esqueceu a senha?</router-link></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="logo">
+                    <img id="dev-inv-img" src="../assets/devinventorylogo.png" alt="Devinventory logo">
+                </div>
             </div>
-            <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
-            <button type="submit" class="btn btn-primary">Entrar</button>
-        </login-form>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newAccountModal">Criar conta</button>
-        <button class="btn btn-secondary" @click="inProgress">Entrar com Google</button>
-        <router-link to="/" @click="inProgress">Esqueceu a senha?</router-link>
+        </div>
         <ModalNewAccount></ModalNewAccount>
     </div>
 </template>
@@ -28,7 +58,7 @@ import { useCookies } from 'vue3-cookies'
 import ModalNewAccount from './ModalNewAccount.vue'
 
 const cookies = useCookies().cookies
-rules.required
+rules
 
 export default {
     data() {
@@ -47,39 +77,41 @@ export default {
     },
     methods: {
         auth() {
+            //Cookie contém nome, email e status: true ou false
             let confirm = cookies.get('logged')
-            // Se usuário já logado, redireciona para template
+            // Caso já exista um cookie com  status: true
             if (confirm !== null) {
                 if (confirm.status === true) {
-                    this.$toast.info('Você já está logado!')
-                    this.$router.push('/users')
+                    this.$router.push('/users/inventario')
                 } else {
-                    // Se usuário estiver deslogado
+                    // Se status: false envia para autenticação
                     this.$store.commit('auth/authUser', {...this.user})
-                    // Se usuário for autenticado, "logged.status=true"
-                    let newConfirm = cookies.get('logged')
-                    if(newConfirm.status === true) {
-                        let name = newConfirm.name.split(' ')[0]
+                    // Verifica o cookie novamente
+                    confirm = cookies.get('logged')
+                    if(confirm.status === true) {
+                        // Pega o primeiro nome do usuário
+                        let name = confirm.name.split(' ')[0]
                         this.$toast.success(`Bem-vindo, ${name}`)
                         // Direciona usuário para template
-                        this.$router.push('/users')
+                        this.$router.push('/users/inventario')
                     } else {
+                        // Se status: false ou não autenticou, mostra msg
                         this.$toast.error(this.$store.state.auth.errorMsg)
                     }
                 }
-            } 
-            if (confirm === null) { //Caso contrário, segue para autenticar
+            }
+            // Se o cookie estiver logged estiver vazio, segue para autenticar
+            if (confirm === null) { 
                 this.$store.commit('auth/authUser', {...this.user})
-                let newConfirmB = cookies.get('logged')
-                    if(newConfirmB.status === true) {
+                confirm = cookies.get('logged')
+                    if(confirm.status === true) {
                         this.$toast.success('Bem-vindo, usuário!')
-                        // Direciona usuário para as funcionalidadesd a página
-                        this.$router.push('/users')
-                    }
-                    if(newConfirmB === null) {
+                        // Direciona usuário para o inventario
+                        this.$router.push('/users/inventario')
+                    } else {
                         // Mostra mensagem referente ao tipo de erro
                         this.$toast.error(this.$store.state.auth.errorMsg)
-                    }  
+                    }
             }
             let form = document.getElementById('loginform')
             form.reset()
@@ -89,7 +121,7 @@ export default {
             form.reset()
         },
         inProgress() {
-            window.alert('Funcionalidade "Entrar com Google" e "Esqueceu senha?" em construção...')
+            window.alert('Pedimos desculpas...as funcionalidades "Entrar com Google" e "Esqueceu senha?" estão em construção.')
         }
     },
     computed: {
@@ -133,11 +165,74 @@ export default {
 }
 </script>
 <style scoped>
+/* Coluna da imagem grande */
+.col-7 {
+    padding: 150px 100px 10px 150px;
+    background-color: aliceblue;
+}
+/* Imagem grande */
+#inventory-img {
+    max-width: 450px;
+}
+/* Imagem pequena LAB365 */
+#lab365-img {
+    max-width: 90px;
+}
+/* Devinventory logo */
+#dev-inv-img {
+    max-width: 150px;
+}
+/* Div da imagem LAB365 */
+.lab365 {
+    text-align: right;
+}
+/* Botões */
 .btn {
     margin: 4px;
 }
-.center_div{
-    margin: 0 auto;
-    width:45% /* value of your choice which suits your alignment */
+/* Div do botão criar conta */
+.criar-conta {
+    text-align: right;
+}
+/* Div da Coluna de login */
+.col-5 {
+    padding-right: 40px;
+    padding-left: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+/* Div geral */
+.row {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 100%;
+}
+/* Div da imagem grande e (form + botão criar conta) */
+.container {
+    text-align: left;
+}
+/* Div do form */
+#loginform {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding-right: 120px;
+}
+/* Div do botão Entrar com Google e esqueceu senha? */
+.alternative {
+    display:block;
+    text-align: center;
+}
+/* Div do devinvetory logo */
+.logo {
+    text-align: right;
+    
+}
+/* Botão Entrar com Google */
+#google {
+    margin-bottom: 20px;
 }
 </style>
