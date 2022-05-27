@@ -91,7 +91,7 @@ export default {
                     if(confirm.status === true) {
                         // Pega o primeiro nome do usuário
                         let name = confirm.name.split(' ')[0]
-                        this.$toast.success(`Bem-vindo, ${name}`)
+                        this.$toast.success(`Bem-vindo(a), ${name}`)
                         // Direciona usuário para template
                         this.$router.push('/users/inventario')
                     } else {

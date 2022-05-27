@@ -27,8 +27,8 @@
           </newuser-form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="setAccount">Submit</button>
+          <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">Sair</button>
+          <button type="button" class="btn btn-primary" @click="setAccount">Enviar</button>
         </div>
       </div>
     </div>
@@ -39,8 +39,7 @@
 import { Form, Field } from 'vee-validate'
 import rules from '../validations/validateusers'
 
-rules.required
-rules.password
+rules
 
 export default {
     components: {
@@ -64,7 +63,7 @@ export default {
         this.$store.commit('users/setAccount', {...this.user})
         let form = document.getElementById('registerform')
         form.reset()
-        // Se houver successo na criação da conta, success === true
+        // Se houver successo na criação da conta
         let success = this.$store.state.users.success
         if (success) {
           this.$toast.success('Conta criada com sucesso!')
