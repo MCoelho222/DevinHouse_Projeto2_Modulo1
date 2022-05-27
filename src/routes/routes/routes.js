@@ -1,7 +1,7 @@
 import UserLogin from '../../views/UserLogin.vue'
 import CadastroUsuario from '../../views/CadastroUsuario.vue'
 import Template from '../../views/TemplateView.vue'
-import ListaItens from '../../views/ListaItens.vue'
+import InventoryBook from '../../views/InventoryBook.vue'
 import EmprestaItem from '../../views/EmprestaItem.vue'
 import CadastroItem from '../../views/CadastroItem.vue'
 import ListaUsuarios from '../../views/ListaUsuarios.vue'
@@ -28,7 +28,7 @@ const routes = [
         return true
     }, children: [
         {path: 'lista-usuarios', component: ListaUsuarios},
-        {path: 'inventario', component: ListaItens},
+        {path: 'inventario', component: InventoryBook},
         {path: 'emprestar', component: EmprestaItem},
         {path: 'cadastro-item', component: CadastroItem},
         {path:'cadastro-usuario', component: CadastroUsuario}

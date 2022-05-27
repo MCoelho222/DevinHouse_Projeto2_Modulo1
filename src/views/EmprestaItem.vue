@@ -1,24 +1,10 @@
 <template>
     <div class="container">
         <div id="itens-header">
-            <!-- <label id="collab-search-title" for="exampleDataList" class="form-label">Buscar itens</label>
-            <input 
-            class="form-control" 
-            list="datalistOptions" 
-            id="exampleDataList"
-            :value="val"
-            placeholder="Digite para procurar..."
-            :data-bs-toggle="bsToggle" 
-            :data-bs-target="bsTarget" 
-            @change="callModal">
-            <datalist id="datalistOptions">
-            <option v-for="item in getAllItens" :value="item.patrimonio" :key="item.patrimonio"/>
-            </datalist> -->
             <form id="search-item-form" @submit.prevent="editItem(selectedItem)" class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Digite o código de patrimônio" aria-label="Search" v-model="selectedItem">
                 <button class="btn btn-outline-info" type="submit" data-bs-toggle="modal" data-bs-target="#editItemModal">Buscar</button>
             </form>
-          
         </div>
         <div class="itens-table">
             <table class="table">

@@ -8,16 +8,17 @@
         </datalist>
     </div>
     <div id="collab-cards">
-    
-    <label class="cards" v-for="item in bringCollabs" :key="item.id" >
-    <div id="modal-btn" data-bs-toggle="modal" data-bs-target="#collabModal" @click="collabDetails(item)">
-        <span>
-            <i class="fa-solid fa-user fa-3x"></i>
-            <p id="collab-name">{{item.nome}}</p>
-            <p id="collab-name">{{item.email}}</p>
-            <p id="collab-name">{{item.telefone}}</p>
-            <p id="collab-name">{{item.cargo}}</p>
-        </span></div></label>
+        <label class="cards" v-for="item in bringCollabs" :key="item.id" >
+            <div id="modal-btn" data-bs-toggle="modal" data-bs-target="#collabModal" @click="collabDetails(item)">
+                <span>
+                    <i class="fa-solid fa-user fa-3x"></i>
+                    <p id="collab-name">{{item.nome}}</p>
+                    <p id="collab-name">{{item.email}}</p>
+                    <p id="collab-name">{{item.telefone}}</p>
+                    <p id="collab-name">{{item.cargo}}</p>
+                </span>
+            </div>
+        </label>
     </div>
     <ModalColaboradores></ModalColaboradores>
 </div>
