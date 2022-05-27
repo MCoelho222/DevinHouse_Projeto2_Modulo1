@@ -1,5 +1,5 @@
 <template>
-    <div class="template">
+    <div class="cadastroUsuario">
         <div class="header" style="display: flex; flex-direction: row; justify-content: space-between">
             <p>Preencha os campos para cadastrar</p>
             <label class="switch">
@@ -169,7 +169,7 @@ export default {
 p {
     font-size: 1.5em;
 }
-.template {
+.cadastroUsuario {
     padding: 50px;
 }
 .container

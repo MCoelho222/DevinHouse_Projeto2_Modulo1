@@ -37,7 +37,7 @@
         </div>
         
     </div>
-    <div id="toggler" style="display: flex; justify-content: end">
+    <div id="toggler">
         <label class="switch">
             <input type="checkbox" @click="controlSideBar">
             <span class="slider round"></span>
@@ -96,9 +96,11 @@ button {
 
 /*Hide/show menu*/
 #toggler {
-    position:absolute;
+    position: absolute;
     bottom: 0;
     left: 0;
+    display: flex; 
+    justify-content: flex-end;
 }
 
 /*Cor do ícones no sidebar*/

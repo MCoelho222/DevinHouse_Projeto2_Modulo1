@@ -1,7 +1,7 @@
 <template>
-  <div class="template" style="display: flex; flex-direction: row; width: 100vw; height: 100vh">
+  <div class="template">
     <proj-sidebar></proj-sidebar>
-    <div class="router-template" :style="main">
+    <div class="router" :style="main">
       <proj-navbar></proj-navbar>
       <router-view></router-view>
     </div>
@@ -37,6 +37,14 @@ export default {
 <style scoped>
 .template {
   background-color: aliceblue;
+  display: flex; 
+  flex-direction: row; 
+  /* width: 100vw; 
+  height: 100vh; */
+}
+.router {
+  display:flex;
+  flex-direction:column;
 }
 
 </style>

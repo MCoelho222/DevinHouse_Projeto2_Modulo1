@@ -22,7 +22,7 @@ export default {
             return `width: ${state.sidebarWidth}px; height: 100vh; display: flex; flex-direction: column; justify-content: space-around`
           },
         main(state) {
-            return `width: calc(100% - ${state.sidebarWidth}px); height: 100vh;`
+            return `width: calc(100% - ${state.sidebarWidth}px); height: 100%;`
         },
     }
 }
