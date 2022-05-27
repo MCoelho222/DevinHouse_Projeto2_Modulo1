@@ -5,7 +5,8 @@ export default {
             sendItens: [],
             item: {},
             errorMsg: null,
-            toEdit: null
+            toEdit: null,
+            stats: {}
             //emprestado: false
         }
     },
@@ -60,6 +61,19 @@ export default {
             let allItens = JSON.parse(localStorage.getItem('itens'))
             let newItens = allItens.filter(item => item.patrimonio !== patr)
             localStorage.setItem('itens', JSON.stringify(newItens))
+        },
+        itemStats(state) {
+            state.stats.itens = state.sendItens.length
+            state.stats.total = state.sendItens.reduce((acc, item) =>
+                Number(item.valor.replace(',', '.')) + acc, 0
+            )
+            let emprestados = 0
+            state.sendItens.forEach(item => {
+                if (item.emprestado !== "Item disponível" && item.emprestado !== "") {
+                    emprestados++
+                }
+            })
+            state.stats.emprestados = emprestados  
         }
     },
     actions: {

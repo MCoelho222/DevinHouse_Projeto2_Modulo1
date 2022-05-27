@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <div id="itens-header">
-            <form id="search-item-form" @submit.prevent="editItem(selectedItem)" class="d-flex">
+        <div id="borrow-search-div">
+            <form id="borrow-search-form" @submit.prevent="editItem(selectedItem)" class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Digite o código de patrimônio" aria-label="Search" v-model="selectedItem">
                 <button class="btn btn-outline-info" type="submit" data-bs-toggle="modal" data-bs-target="#editItemModal">Buscar</button>
             </form>
@@ -56,11 +56,7 @@ export default {
 },
     data() {
         return {
-            allItens: [],
-            all: [{nome: 'marcelo'}, {nome: 'marcio'}],
             selectedItem: null,
-            bsToggle: null,
-            bsTarget: null
         }
     },
     methods: {
@@ -76,12 +72,6 @@ export default {
             let form = document.getElementById('search-item-form')
             form.reset()
         },
-        callModal() {
-            this.bsToggle = "modal"
-            this.bsTarget = "#editItemModal"
-        }
-
-
     },
     computed: {
         getAllItens() {
@@ -101,7 +91,7 @@ export default {
 }
 </script>
 <style scoped>
-#itens-header {
+#borrow-search-div {
     display:flex;
     flex-direction:row;
     padding-top: 20px;
