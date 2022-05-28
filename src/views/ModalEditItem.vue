@@ -66,7 +66,7 @@
           </editItem-form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">Sair</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Sair</button>
           <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" @click="delItem">Deletar item</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="saveItem">Salvar</button>
           

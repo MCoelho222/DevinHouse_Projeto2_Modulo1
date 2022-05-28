@@ -96,13 +96,11 @@
                         <span class="text-danger" v-text="errors.ref" v-show="errors.ref"></span>
                     </div>
                 </div>
-                <!-- <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
-                <button type="submit" class="btn btn-primary">Salvar</button> -->
             </collab-form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="cleanForm">Close</button>
-          <button type="button" class="btn btn-primary" @click="saveCollab">Submit</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="cleanForm">Sair</button>
+          <button type="button" class="btn btn-primary" @click="saveCollab">Salvar</button>
         </div>
       </div>
     </div>

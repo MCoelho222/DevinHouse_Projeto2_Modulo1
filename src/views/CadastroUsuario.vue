@@ -1,6 +1,6 @@
 <template>
     <div class="cadastroUsuario">
-        <div class="header" style="display: flex; flex-direction: row; justify-content: space-between">
+        <div class="header">
             <p>Preencha os campos para cadastrar</p>
             <label class="switch">
                 <input type="checkbox" @click="edit">
@@ -11,7 +11,7 @@
         <div class="container">
             <h5>Dados pessoais</h5>
             <collab-form @submit="saveCollab" id="collab-form" :validation-schema="schema" v-slot="{ errors }">
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-6">
                         <label class="form-label">Nome completo</label>
                         <collab-field type="text" class="form-control" name="name" v-model="collab.nome" :disabled="disabled"/>
@@ -32,7 +32,7 @@
                         <span class="text-danger" v-text="errors.birth" v-show="errors.birth"></span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-4">
                         <label class="form-label">Telefone</label>
                         <collab-field type="text" class="form-control" name="phone" v-model="collab.telefone" :disabled="disabled"/>
@@ -55,10 +55,10 @@
                     </div>
                 </div>
                 <h5>Dados de endereço</h5>
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-4">
                         <label class="form-label">CEP</label>
-                        <collab-field type="text" class="form-control" name="cep" v-model="cepNum" @change=getCepInfo :disabled="disabled"/>
+                        <collab-field type="text" class="form-control" name="cep" v-model="cepNum" @input=getCepInfo :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.cep" v-show="errors.cep"></span>
                         <span class="text-danger" v-text="errorMsg" v-show="errorMsg"></span>
                     </div>
@@ -71,7 +71,7 @@
                         <collab-field id='uf' type="text" class="form-control" name="state" readonly/>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-10">
                         <label class="form-label">Logradouro</label>
                         <collab-field id='logradouro' type="text" class="form-control" name="street" readonly/>
@@ -82,11 +82,10 @@
                         <span class="text-danger" v-text="errors.num" v-show="errors.num"></span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-4">
                         <label class="form-label">Complemento</label>
                         <collab-field type="text" class="form-control" name="complement" v-model="collab.complemento" :disabled="disabled"/>
-                        <span class="text-danger" v-text="errors.complement" v-show="errors.complement"></span>
                     </div>
                     <div class="col-4">
                         <label class="form-label">Bairro</label>
@@ -95,11 +94,13 @@
                     <div class="col-4">
                         <label class="form-label">Ponto de referência</label>
                         <collab-field type="text" class="form-control" name="ref" v-model="collab.referencia" :disabled="disabled"/>
-                        <span class="text-danger" v-text="errors.ref" v-show="errors.ref"></span>
                     </div>
                 </div>
-                <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
-                <button type="submit" class="btn btn-primary">Salvar</button>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-secondary" type="button" @click="cleanForm">Limpar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+                
           </collab-form>
         </div>
     </div>
@@ -127,8 +128,6 @@ export default {
                 job: 'required',
                 cep: 'required',
                 num: 'required',
-                complement: 'required',
-                ref: 'required'
             },
             collab: {},
             disabled: true,
@@ -166,18 +165,31 @@ export default {
 }
 </script>
 <style scoped>
+.header {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between;
+}
 p {
     font-size: 1.5em;
 }
+h5 {
+    margin-bottom: 15px;
+    font-weight: 500;
+}
 .cadastroUsuario {
     padding: 50px;
+    min-height: 100%;
 }
 .container
  {
      text-align: left;
-     background-color: white;
      padding: 30px;
  }
+ .form-label {
+    margin-bottom: 2px;
+    font-size: 1em;
+}
 
 
  .switch {

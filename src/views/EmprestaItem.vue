@@ -11,7 +11,9 @@
                 </div>
             </div>
         </div>
-        <h3>Situação atual</h3>
+        <div class="container pl-4">
+            <h3 >Situação atual</h3>
+        </div>
         <div class="container p-4">
             <table class="table table-hover table-borderless align-middle">
                 <thead>
@@ -23,29 +25,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  v-for="(item, index) in getAllItens" :key="item.patrimonio" @click="editItem(item.patrimonio)">
-                    <td data-bs-toggle="modal" data-bs-target="#editItemModal"><span>{{ item.patrimonio }}</span></td>
-                    <td data-bs-toggle="modal" data-bs-target="#editItemModal"><span>{{ item.titulo }}</span></td>
-                    <td data-bs-toggle="modal" data-bs-target="#editItemModal"><span>{{ item.categoria }}</span></td>
-                    <td>
-                        <div id="collab-select">
-
-                            <input class="form-control" 
-                            list="collabOptions" 
-                            :id="index"
-                            :value="item.emprestado ? item.emprestado : 'Item disponível'"
-                            placeholder="Digite para procurar..." 
-                            @change="emprestar(item, index)" >
-
-                            <datalist id="collabOptions">
-                            <option v-for="name in allCollabs" :value="name.nome" :key="name.nome"  />
-                            <option value="Item disponível"/>
-                            </datalist>
-
-                        </div>
-                    </td>
+                    <tr v-for="(item, index) in getAllItens" :key="item.patrimonio" @click="editItem(item.patrimonio)">
+                        <td data-bs-toggle="modal" data-bs-target="#editItemModal"><span>{{ item.patrimonio }}</span></td>
+                        <td data-bs-toggle="modal" data-bs-target="#editItemModal"><span>{{ item.titulo }}</span></td>
+                        <td data-bs-toggle="modal" data-bs-target="#editItemModal"><span>{{ item.categoria }}</span></td>
+                        <td>
+                            <select :id="index" class="form-select" @input="emprestar(item, index)">
+                                <option disabled selected>{{ item.emprestado }}</option>
+                                <option v-for="name in allCollabs" :value="name.nome" :key="name.nome">{{name.nome}}</option>
+                                <option v-show="item.emprestado !== 'Item disponível'" value="Item disponível">Item disponível</option>
+                            </select>
+                        </td>
                     </tr>
-                    
                 </tbody>
             </table>
         </div>
@@ -63,21 +54,22 @@ export default {
 },
     data() {
         return {
-            selectedItem: null,
+            selectedItem: null
         }
     },
     methods: {
         emprestar(item, index) {
             let nome = document.getElementById(`${index}`).value
+            this.emprestado = nome
             this.$store.commit('itens/flagItem', {
                 itemTo: nome,
                 itemWhich: item
             })
-            this.$toast.success(`Item emprestado para ${nome}.`)
+            this.$toast.success(nome !== "Item disponível" ? `Item emprestado para ${nome}.` : "Item disponível")
         },
         editItem(num) {
             this.$store.commit('itens/editItem', num)
-            let form = document.getElementById('search-item-form')
+            let form = document.getElementById('borrow-search-form')
             form.reset()
         },
     },

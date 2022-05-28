@@ -1,7 +1,7 @@
 <template>
     <div class="cadastroItem">
         <div class="header">
-            <h3>Preencha os campos para cadastrar</h3>
+            <p>Preencha os campos para cadastrar</p>
             <div>
                 <span id="switch-editar">Editar</span>
                 <label class="switch">
@@ -13,7 +13,7 @@
         
         <div class="container">
             <newitem-form @submit="saveItem" id="newitem-form" :validation-schema="schema" v-slot="{ errors }">
-                <div class="row mb-3 g-2">
+                <div class="row mb-2">
                     <div class="col-3">
                         <label class="form-label">Código de patrimônio</label>
                         <newitem-field type="text" class="form-control" name="patrimonio" v-model="item.patrimonio" :disabled="disabled" placeholder="XX9999-999"/>
@@ -35,7 +35,7 @@
                         <span class="text-danger" v-text="errors.categoria" v-show="errors.categoria"></span>
                     </div>
                 </div>
-                <div class="row mb-3 g-2">
+                <div class="row mb-2">
                     <div class="col-3">
                         <label class="form-label">Valor R$</label>
                         <newitem-field type="text" class="form-control" name="valor" v-model="item.valor" :disabled="disabled" placeholder="9999,99" />
@@ -47,7 +47,7 @@
                         <span class="text-danger" v-text="errors.url" v-show="errors.url"></span>
                     </div>
                 </div>
-                <div class="row mb-3 g-2">
+                <div class="row mb-2">
                     <div class="col-6">
                         <label class="form-label">Marca</label>
                         <newitem-field type="text" class="form-control" name="marca" v-model="item.marca" :disabled="disabled"/>
@@ -59,7 +59,7 @@
                         <span class="text-danger" v-text="errors.modelo" v-show="errors.modelo"></span>
                     </div>
                 </div>
-                <div class="row mb-3 g-2">
+                <div class="row mb-2">
                 <div class="col-12">
                     <label for="exampleFormControlTextarea1" class="form-label">Descrição</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" name="descricao" rows="3" v-model="item.descricao" :disabled="disabled"></textarea>
@@ -133,9 +133,11 @@ export default {
 }
 </script>
 <style scoped>
-h3 {
+p {
+    font-size: 1.5em;
     margin-bottom: 40px;
 }
+
 #switch-editar {
     margin: 6px;
 }
