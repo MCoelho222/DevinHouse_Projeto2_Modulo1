@@ -2,20 +2,17 @@
 <div class="container">
     <div id="listcollab-header">
         <label id="collab-search-title" for="exampleDataList" class="form-label">Buscar um colaborador</label>
-        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
-        <datalist id="datalistOptions">
-        <option v-for="item in bringCollabs" :value="item.nome" :key="item.id"/>
-        </datalist>
+        <input class="form-control" type="text" id="search-user" placeholder="Digite para buscar..." @input="setCollabs">
     </div>
     <div id="collab-cards">
-        <label class="cards" v-for="item in bringCollabs" :key="item.id" >
+        <label class="cards shadow" v-for="item in collabs" :key="item.id" >
             <div id="modal-btn" data-bs-toggle="modal" data-bs-target="#collabModal" @click="collabDetails(item)">
+                <vue-gravatar class="gravatar rounded-circle" :email="item.email" size="100"/>
                 <span>
-                    <i class="fa-solid fa-user fa-3x"></i>
-                    <p id="collab-name">{{item.nome}}</p>
-                    <p id="collab-name">{{item.email}}</p>
-                    <p id="collab-name">{{item.telefone}}</p>
-                    <p id="collab-name">{{item.cargo}}</p>
+                    <p><strong>{{item.nome}}</strong></p>
+                    <p id="collab-email">{{item.email}}</p>
+                    <p id="collab-tel">{{`(${item.telefone.substring(0, 2)}) ${item.telefone.substring(2, 3)} ${item.telefone.substring(3, 11)}`}}</p>
+                    <p style="color:rgb(10, 117, 183);"><strong>{{item.cargo}}</strong></p>
                 </span>
             </div>
         </label>
@@ -31,7 +28,7 @@ export default {
     },
     data() {
         return {
-            
+            collabs: []
         }
     },
     methods: {
@@ -43,31 +40,39 @@ export default {
             }else{
                 this.$store.commit('collaborators/setSelectedId', item.id)
             }
-        }
-    },
-    computed: {
-        bringCollabs() {
-            return this.$store.getters['collaborators/sendCollabs']
+        },
+        setCollabs() {
+            let inputUser = document.getElementById('search-user')
+            if (inputUser == null){
+                this.collabs = this.$store.getters['collaborators/sendCollabs']
+            } else {
+                let users = this.$store.getters['collaborators/sendCollabs']
+                let user = users.filter(item => item.nome.toLowerCase().indexOf(inputUser.value.toLowerCase()) !== -1)
+                this.collabs = user
+            }
         }
     },
     mounted() {
         this.$store.commit('collaborators/getCollab')
+        this.collabs = this.$store.getters['collaborators/sendCollabs']
     }
-
 }
 </script>
 <style scoped>
+span {
+    margin-top: 10px;
+    display: flex; 
+    flex-direction: column;
+}
+
 .cards {
     background-color: rgb(187, 218, 245);
     margin: 15px;
-    border:black;
     min-width: 20%;
     min-height: 100%;
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    box-shadow:inset;
-    
 }
 #collab-cards {
     text-align: left;
