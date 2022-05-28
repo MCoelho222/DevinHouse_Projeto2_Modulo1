@@ -1,7 +1,7 @@
 <template>
-<div class="container">
-    <div id="data-cards">
-        <label class="cards">
+<div class="container p-4">
+    <div class="row data-card">
+        <label class="cards col-sm-2">
             <span>
                 <div class="icon-data">
                     <i class="fa-solid fa-users fa-3x"></i>
@@ -10,7 +10,7 @@
                 <p class="data-footer">Colaboradores</p>
             </span>
         </label>
-        <label class="cards">
+        <label class="cards col-sm-2">
             <span>
                 <div class="icon-data">
                     <i class="fa-solid fa-shapes fa-3x"></i>
@@ -19,7 +19,7 @@
                 <p class="data-footer">Itens</p>
             </span>
         </label>
-        <label class="cards">
+        <label class="cards col-sm-2">
             <span>
                 <div class="icon-data">
                     <i class="fa-solid fa-brazilian-real-sign fa-3x"></i>
@@ -28,7 +28,7 @@
                 <p class="data-footer">Total</p>
             </span>
         </label>
-        <label class="cards">
+        <label class="cards col-sm-2">
             <span>
                 <div class="icon-data">
                     <i class="fa-solid fa-handshake-angle fa-3x"></i>
@@ -39,13 +39,14 @@
         </label>
     </div>
     <div id="inv-search-div">
+        <h3>Busca itens</h3>
         <form id="inv-search-form" @submit.prevent="editItem(selectedItem)" class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Digite o código de patrimônio" aria-label="Search" v-model="selectedItem">
             <button class="btn btn-outline-info" type="submit" data-bs-toggle="modal" data-bs-target="#editItemModal">Buscar</button>
         </form>
     </div>
-    <div id="collab-cards">
-        <label class="cards" v-for="item in getAllItens" :key="item.id" >
+    <div class="row" id="item-cards">
+        <label class="item-card col-sm-3" v-for="item in getAllItens" :key="item.id" >
             <div id="modal-btn" data-bs-toggle="modal" data-bs-target="#editItemModal" @click="editItem(item.patrimonio)">
                     <img class="inv-img" :src="item.url" alt="">
                     <p class="inv-card-description">{{item.descricao}}</p>
@@ -103,17 +104,44 @@ export default {
 <style scoped>
 img {
     max-width: 150px;
+    max-height: 100px;
 }
 .cards {
     background-color: rgb(187, 218, 245);
     margin: 15px;
-    border:black;
-    max-width: 30%;
-    max-height: 100%;
+    min-width: 154px;
+    /* max-width: 30%;
+    max-height: 100%; */
     border-radius: 10px;
     padding: 20px;
     text-align: center;
-    box-shadow:inset;
     
+}
+.data-card {
+    display:flex;
+    justify-content: space-evenly;
+}
+#item-cards {
+    display:flex;
+    justify-content: space-evenly;
+}
+.item-card {
+    width: 260px;
+    height: 340px;
+    background-color: rgb(187, 218, 245);
+    margin: 15px;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
+.inv-card-description {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+#inv-search-div {
+    padding: 20px;
 }
 </style>
