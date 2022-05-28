@@ -1,13 +1,19 @@
 <template>
-    <div class="container">
-        <div id="borrow-search-div">
-            <form id="borrow-search-form" @submit.prevent="editItem(selectedItem)" class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Digite o código de patrimônio" aria-label="Search" v-model="selectedItem">
-                <button class="btn btn-outline-info" type="submit" data-bs-toggle="modal" data-bs-target="#editItemModal">Buscar</button>
-            </form>
+    <div class="container p-5">
+    <h3>Buscar por patrimônio</h3>
+        <div class="container p-4">
+            <div class="row mb-3" >
+                <div class="col-12">
+                    <form id="borrow-search-form" @submit.prevent="editItem(selectedItem)" class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Digite o código de patrimônio" aria-label="Search" v-model="selectedItem">
+                        <button class="btn btn-primary" type="submit" data-bs-toggle="modal" data-bs-target="#editItemModal">Buscar</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="itens-table">
-            <table class="table">
+        <h3>Situação atual</h3>
+        <div class="container p-4">
+            <table class="table table-hover table-borderless align-middle">
                 <thead>
                     <tr>
                     <th scope="col">Patrimônio</th>
@@ -18,9 +24,9 @@
                 </thead>
                 <tbody>
                     <tr  v-for="(item, index) in getAllItens" :key="item.patrimonio" @click="editItem(item.patrimonio)">
-                    <td data-bs-toggle="modal" data-bs-target="#editItemModal">{{ item.patrimonio }}</td>
-                    <td data-bs-toggle="modal" data-bs-target="#editItemModal">{{ item.titulo }}</td>
-                    <td data-bs-toggle="modal" data-bs-target="#editItemModal">{{ item.categoria }}</td>
+                    <td data-bs-toggle="modal" data-bs-target="#editItemModal"><span>{{ item.patrimonio }}</span></td>
+                    <td data-bs-toggle="modal" data-bs-target="#editItemModal"><span>{{ item.titulo }}</span></td>
+                    <td data-bs-toggle="modal" data-bs-target="#editItemModal"><span>{{ item.categoria }}</span></td>
                     <td>
                         <div id="collab-select">
 
@@ -43,6 +49,7 @@
                 </tbody>
             </table>
         </div>
+        
         <ModalEditItem></ModalEditItem>
     </div>
 </template>
@@ -66,6 +73,7 @@ export default {
                 itemTo: nome,
                 itemWhich: item
             })
+            this.$toast.success(`Item emprestado para ${nome}.`)
         },
         editItem(num) {
             this.$store.commit('itens/editItem', num)
@@ -91,13 +99,22 @@ export default {
 }
 </script>
 <style scoped>
-#borrow-search-div {
-    display:flex;
-    flex-direction:row;
-    padding-top: 20px;
-    
+.container {
+    background-color: aliceblue;
+}
+h3 {
+    margin-bottom: 10px;
 }
 .form-select {
     margin-right: 10px;
 }
+
+th {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+td:hover {
+    cursor: pointer;
+}
+
 </style>

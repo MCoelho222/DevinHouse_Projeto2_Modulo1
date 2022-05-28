@@ -1,40 +1,41 @@
 <template>
     <div class="cadastroItem">
-        <div class="header" style="display: flex; flex-direction: row; justify-content: space-between">
-            <p>Preencha os campos para cadastrar</p>
-            <label class="switch">
-                <input type="checkbox" @click="edit">
-                <span class="slider round"></span>
-            </label>
-            <!--<button type="button" class="btn btn-primary btn-sm" @click="edit">Editar</button>-->
+        <div class="header">
+            <h3>Preencha os campos para cadastrar</h3>
+            <div>
+                <span id="switch-editar">Editar</span>
+                <label class="switch">
+                    <input type="checkbox" @click="edit">
+                    <span class="slider round"></span>
+                </label>
+             </div>
         </div>
+        
         <div class="container">
-            <h5>Dados principais</h5>
             <newitem-form @submit="saveItem" id="newitem-form" :validation-schema="schema" v-slot="{ errors }">
-                <div class="row">
+                <div class="row mb-3 g-2">
                     <div class="col-3">
                         <label class="form-label">Código de patrimônio</label>
                         <newitem-field type="text" class="form-control" name="patrimonio" v-model="item.patrimonio" :disabled="disabled" placeholder="XX9999-999"/>
                         <span class="text-danger" v-text="errors.patrimonio" v-show="errors.patrimonio"></span>
                     </div>
                     <div class="col-6">
-                        <label class="form-label">Título do item</label>
+                        <label class="form-label">Título</label>
                         <newitem-field type="text" class="form-control" name="titulo" v-model="item.titulo" :disabled="disabled"/>
                         <span class="text-danger" v-text="errors.titulo" v-show="errors.titulo"></span>
                     </div>
                     <div class="col-3">
-                        <label class="form-label">Categoria do item</label>
+                        <label class="form-label">Categoria</label>
                         <!--<newitem-field type="text" class="form-control" name="categoria" v-model="item.categoria" :disabled="disabled"/>-->
                         <newitem-field as="select" class="form-select" aria-label="Default select example" name="categoria" v-model="item.categoria" :disabled="disabled">
-                            <option value="eletronicos">Eletrônicos</option>
-                            <option value="moveis">Móvel</option>
-                            <option value="acessorios">Acessórios</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Móveis">Móvel</option>
+                            <option value="Acessórios">Acessórios</option>
                         </newitem-field>
                         <span class="text-danger" v-text="errors.categoria" v-show="errors.categoria"></span>
                     </div>
                 </div>
-                <h5>Dados complementares</h5>
-                <div class="row">
+                <div class="row mb-3 g-2">
                     <div class="col-3">
                         <label class="form-label">Valor R$</label>
                         <newitem-field type="text" class="form-control" name="valor" v-model="item.valor" :disabled="disabled" placeholder="9999,99" />
@@ -46,7 +47,7 @@
                         <span class="text-danger" v-text="errors.url" v-show="errors.url"></span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-3 g-2">
                     <div class="col-6">
                         <label class="form-label">Marca</label>
                         <newitem-field type="text" class="form-control" name="marca" v-model="item.marca" :disabled="disabled"/>
@@ -58,12 +59,16 @@
                         <span class="text-danger" v-text="errors.modelo" v-show="errors.modelo"></span>
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="row mb-3 g-2">
+                <div class="col-12">
                     <label for="exampleFormControlTextarea1" class="form-label">Descrição</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" name="descricao" rows="3" v-model="item.descricao" :disabled="disabled"></textarea>
                 </div>
-                <button class="btn btn-secondary" type="button" @click="cleanForm">Limpar</button>
+                </div>
+                <div class="modal-footer">
+                <button class="btn btn-outline-secondary" type="button" @click="cleanForm">Limpar</button>
                 <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
           </newitem-form>
         </div>
     </div>
@@ -128,17 +133,33 @@ export default {
 }
 </script>
 <style scoped>
-p {
-    font-size: 1.5em;
+h3 {
+    margin-bottom: 40px;
+}
+#switch-editar {
+    margin: 6px;
+}
+.form-label {
+    margin-bottom: 2px;
+    font-size: 1em;
+}
+.header {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between;
+    
 }
 .cadastroItem {
     padding: 50px;
+    background-color: aliceblue;
+    min-height: 100%;
 }
 .container
  {
      text-align: left;
-     background-color: white;
+     background-color: aliceblue;
      padding: 30px;
+     
  }
 
 
