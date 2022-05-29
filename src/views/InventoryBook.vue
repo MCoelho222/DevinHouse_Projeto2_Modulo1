@@ -1,75 +1,40 @@
 <template>
 <div class="container p-4">
     <div class="row data-card">
-        <label class="cards col-sm-2">
-            <span>
-                <div class="icon-data">
-                    <i class="fa-solid fa-users fa-3x"></i>
-                    <p class="data">{{ allCollabs.length }}</p>
-                </div>
-                <p class="data-footer">Colaboradores</p>
-            </span>
-        </label>
-        <label class="cards col-sm-2">
-            <span>
-                <div class="icon-data">
-                    <i class="fa-solid fa-shapes fa-3x"></i>
-                    <p class="data">{{ invStats.itens }}</p>
-                </div>
-                <p class="data-footer">Itens</p>
-            </span>
-        </label>
-        <label class="cards col-sm-2">
-            <span>
-                <div class="icon-data">
-                    <i class="fa-solid fa-brazilian-real-sign fa-3x"></i>
-                    <p class="data">{{ invStats.total }}</p>
-                </div>
-                <p class="data-footer">Total</p>
-            </span>
-        </label>
-        <label class="cards col-sm-2">
-            <span>
-                <div class="icon-data">
-                    <i class="fa-solid fa-handshake-angle fa-3x"></i>
-                    <p class="data">{{ invStats.emprestados }}</p>
-                </div>
-                <p class="data-footer">Emprestados</p>
-            </span>
-        </label>
+        <SmallCard :icon="'fa-solid fa-users fa-3x'" :data="allCollabs.length" :footer="'Colaboradores'"></SmallCard>
+        <SmallCard :icon="'fa-solid fa-shapes fa-3x'" :data="invStats.itens" :footer="'Itens'"></SmallCard>
+        <SmallCard :icon="'fa-solid fa-brazilian-real-sign fa-3x'" :data="invStats.total" :footer="'Total'"></SmallCard>
+        <SmallCard :icon="'fa-solid fa-handshake-angle fa-3x'" :data="invStats.emprestados" :footer="'Emprestados'"></SmallCard>
     </div>
     <div id="inv-search-div">
-        <h3>Busca itens</h3>
-        <form id="inv-search-form" @submit.prevent="editItem(selectedItem)" class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Digite o código de patrimônio" aria-label="Search" v-model="selectedItem">
-            <button class="btn btn-outline-info" type="submit" data-bs-toggle="modal" data-bs-target="#editItemModal">Buscar</button>
-        </form>
-    </div>
-    <div class="row" id="item-cards">
-        <label class="item-card col-sm-3" v-for="item in getAllItens" :key="item.id" >
-            <div id="modal-btn" data-bs-toggle="modal" data-bs-target="#editItemModal" @click="editItem(item.patrimonio)">
-                    <img class="inv-img" :src="item.url" alt="">
-                    <p class="inv-card-description">{{item.descricao}}</p>
-                    <p class="inv-card-brand">{{item.marca}}</p>
-                    <p class="inv-card-model">{{item.modelo}}</p>
-                    <span v-if="item.emprestado == 'Item disponível' || item.emprestado == ''">Na empresa</span>
-                    <span v-else>Emprestado: {{item.emprestado}}</span>
-            </div>
+        <label id="collab-search-title" for="exampleDataList" class="form-label">
+            <h3>Buscar itens</h3>
         </label>
+        <input class="form-control" type="text" id="search-item" placeholder="Digite para buscar..." @input="setItems">
+    </div>
+    <div id="inv-cards">
+        <div class="inv-card shadow" v-for="item in items" :key="item.id">
+            <MediumCard cardType="inventory" :img="item.url" :first="item.descricao" :second="item.marca" :third="item.modelo" :fourth="item.emprestado" :item="item.patrimonio"></MediumCard>
+        </div>
     </div>
     <ModalEditItem></ModalEditItem>
 </div>
 </template>
 <script>
 import ModalEditItem from './ModalEditItem.vue'
+import MediumCard from '@/components/MediumCard.vue'
+import SmallCard from '@/components/SmallCard.vue'
 
 export default {
     components: {
-        ModalEditItem
+    ModalEditItem,
+    MediumCard,
+    SmallCard
 },
     data() {
         return {
             selectedItem: null,
+            items: []
         }
     },
     methods: {
@@ -78,12 +43,26 @@ export default {
             let form = document.getElementById('search-item-form')
             form.reset()
         },
+        setItems() {
+            let inputItem = document.getElementById('search-item')
+            let allItems = this.$store.state.itens.sendItens
+            if (inputItem == null){
+                this.items = allItems
+            } else {
+                let filtered = []
+                allItems.forEach(item => {
+                    for (const [key] of Object.entries(item)) {
+                        if (item[key].toLowerCase().indexOf(inputItem.value.toLowerCase()) !== -1) {
+                            filtered.push(item)
+                            break
+                        }
+                    }
+                })
+                this.items = filtered
+            }
+        }
     },
     computed: {
-        getAllItens() {
-            return this.$store.state.itens.sendItens
-            
-        },
         allCollabs() {
             return this.$store.state.collaborators.collabs
         },
@@ -97,49 +76,26 @@ export default {
         this.$store.commit('itens/getItens')
         this.$store.commit('itens/itemStats')
         this.$store.commit('collaborators/getCollab')
+        this.items = this.$store.state.itens.sendItens
     }
 
 }
 </script>
 <style scoped>
-img {
-    max-width: 150px;
-    max-height: 100px;
+#inv-cards {
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
-.cards {
-    background-color: rgb(187, 218, 245);
-    margin: 15px;
-    min-width: 154px;
-    /* max-width: 30%;
-    max-height: 100%; */
+.inv-card {
     border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    
+    margin: 15px;
 }
+
 .data-card {
     display:flex;
     justify-content: space-evenly;
-}
-#item-cards {
-    display:flex;
-    justify-content: space-evenly;
-}
-.item-card {
-    width: 260px;
-    height: 340px;
-    background-color: rgb(187, 218, 245);
-    margin: 15px;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-}
-.inv-card-description {
-    display: -webkit-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
 }
 #inv-search-div {
     padding: 20px;
