@@ -1,191 +1,194 @@
 <template>
-  <div class="side-bar" :style="sidebar">
-    <div class="sb-icon" v-show="toggleSideBar">
-        <img src="../../assets/InventaryLogonobg.png" alt="DevInventary Logo">
+  <div class="side-bar p-2" :style="sidebar">
+    <div class="sb-icon text-center">
+      <img id="logo" src="../../assets/InventaryLogonobg.png" alt="DevInventary Logo" />
     </div>
 
     <div class="btns-div" v-show="toggleSideBar">
+      <SideBarButtons
+        title="Geral"
+        icon1="fa-solid fa-chart-simple"
+        btn1="Inventário"
+        :method1="inventario"
+        icon2="fa-solid fa-arrow-right-from-bracket"
+        btn2="Sair"
+        :method2="sair"
+      />
 
-        <div class="sb-btns">
-            <label for="">Geral</label>
-            <button type="button" class="btn btn-outline-info" @click="inventario">
-            <i class="fa-solid fa-chart-simple"></i> 
-            Inventário</button>
-            <button type="button" class="btn btn-outline-info" @click="sair">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            Sair</button>
-        </div>
-
-        <div class="sb-btns">
-            <label for="">Colaboradores</label>
-            <button type="button" class="btn btn-outline-info" @click="cadastraUser">
-            <i class="fa-solid fa-user-plus"></i>
-            Cadastrar</button>
-            <button type="button" class="btn btn-outline-info" @click="listaUsers">
-            <i class="fa-solid fa-list"></i> 
-            Listar</button>
-        </div>
-
-        <div class="sb-btns">
-            <label for="">Produtos</label>
-            <button type="button" class="btn btn-outline-info" @click="cadastraItens">
-            <i class="fa-solid fa-user-plus"></i>
-            Cadastrar</button>
-            <button type="button" class="btn btn-outline-info" @click="emprestaItens">
-            <i class="fa-solid fa-share-nodes"></i>
-            Emprestar</button>
-        </div>
-        
+      <SideBarButtons
+        title="Colaboradores"
+        icon1="fa-solid fa-user-plus"
+        btn1="Cadastrar"
+        :method1="cadastraUser"
+        icon2="fa-solid fa-list"
+        btn2="Listar"
+        :method2="listaUsers"
+      />
+      
+      <SideBarButtons
+        title="Itens"
+        icon1="fa-solid fa-user-plus"
+        btn1="Cadastrar"
+        :method1="cadastraItens"
+        icon2="fa-solid fa-share-nodes"
+        btn2="Emprestar"
+        :method2="emprestaItens"
+      />
     </div>
-    <div id="toggler">
-        <label class="switch">
-            <input type="checkbox" @click="controlSideBar">
-            <span class="slider round"></span>
-        </label>
+    <div class="text-center" v-show="!toggleSideBar">
+      <div class="col mb-5">
+        <div class="onlyIcon">
+          <i class="fa-solid fa-chart-simple" @click="inventario"></i>
+        </div>
+        <div class="onlyIcon">
+          <i class="fa-solid fa-arrow-right-from-bracket" @click="sair"></i>
+        </div>
+      </div>
+      <div class="col mb-5">
+        <div class="onlyIcon">
+          <i class="fa-solid fa-user-plus" @click="cadastraUser"></i>
+        </div>
+        <div class="onlyIcon">
+          <i class="fa-solid fa-list" @click="listaUsers"></i>
+        </div>
+      </div>
+      <div class="col mb-5">
+        <div class="onlyIcon">
+          <i class="fa-solid fa-user-plus" @click="cadastraItens"></i>
+        </div>
+        <div class="onlyIcon">
+          <i class="fa-solid fa-share-nodes" @click="emprestaItens"></i>
+        </div>
+      </div>
+    </div>
+    <!-- div geral do switch -->
+    <div id="switchDiv">
+      <!-- body do switch -->
+      <div id="switchBody" @click="toggleSwitch">
+        <!-- Switch circle -->
+        <div id="switchCircle">
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import SideBarButtons from "./SideBarButtons.vue";
 export default {
   methods: {
     // Hide/show sidebar
-    controlSideBar() {
-      this.$store.commit('template/controlSideBar')
+    toggleSwitch() {
+      // Switch circle
+      let switchCircle = document.getElementById("switchCircle");
+      let switchDiv = document.getElementById("switchDiv");
+      let logoImg = document.getElementById('logo');
+      // Se não tiver classe switchCircle, adiciona
+      if (switchCircle.className != "switchCircle") {
+        switchCircle.className = "switchCircle";
+        switchDiv.style.justifyContent = 'center'
+        logoImg.style.width = '60px'
+      } else {
+        // Se houver, apaga
+        switchCircle.className = "";
+        switchDiv.style.justifyContent = 'right'
+        logoImg.style.width = 'auto'
+      }
+      this.$store.commit("template/controlSideBar");
     },
     inventario() {
-      this.$router.push('/users/inventario')
+      this.$router.push("/users/inventario");
     },
     sair() {
-      this.$store.commit('auth/logOutUser')
-      this.$toast.success(this.$store.getters['auth/setLogoutMsg'])
-      this.$router.push('/')
+      this.$store.commit("auth/logOutUser");
+      this.$toast.success(this.$store.getters["auth/setLogoutMsg"]);
+      this.$router.push("/");
     },
     cadastraUser() {
-      this.$router.push('/users/cadastro-usuario')
+      this.$router.push("/users/cadastro-usuario");
     },
     listaUsers() {
-      this.$router.push('/users/lista-usuarios')
+      this.$router.push("/users/lista-usuarios");
     },
     cadastraItens() {
-      this.$router.push('/users/cadastro-item')
+      this.$router.push("/users/cadastro-item");
     },
     emprestaItens() {
-      this.$router.push('/users/emprestar')
-    }
+      this.$router.push("/users/emprestar");
+    },
   },
   computed: {
     sidebar() {
-      return this.$store.getters['template/sidebar']
+      return this.$store.getters["template/sidebar"];
     },
     toggleSideBar() {
-      return this.$store.state.template.toggleSideBar
-    }
-  }
-}
+      return this.$store.state.template.toggleSideBar;
+    },
+  },
+  components: { SideBarButtons },
+
+};
 </script>
 <style scoped>
-
-label {
-    color: rgb(7, 201, 239);
+label, i {
+  color: rgb(7, 201, 239);
 }
-
-button {
-    text-align: left;
-    font-size: small;
+.onlyIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  border: 1px solid rgb(7, 201, 239);
+  padding: 6px 12px;
+  margin-right: 0px;
+  margin-bottom: 10px;
+  width: 34px;
+  height: 34px;
 }
-
-/*Hide/show menu*/
-#toggler {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    display: flex; 
-    justify-content: flex-end;
+.onlyIcon:hover {
+  background-color: rgb(7, 201, 239);
+}
+.onlyIcon:hover i {
+  color: rgb(14, 34, 63)
+}
+/* Div geral do switch */
+#switchDiv {
+  display: flex;
+  justify-content: flex-end;
+}
+/* Corpo do switch, alinha o switch para esquerda */
+#switchBody {
+  display: flex;
+  justify-content: left; /* alinha na esquerda */
+  align-items: center; /* alinha na vertical */
+  width: 50px;
+  height: 28px;
+  border: 1px solid rgb(7, 201, 239);
+  border-radius: 34px;
+}
+/* Switch circle */
+#switchCircle {
+  width: 21px;
+  height: 21px;
+  margin-left: 3px;
+  background-color: rgb(7, 201, 239);
+  border-radius: 50%;
+  transition: all 0.4s;
+}
+/* Ao clicar adiciona esta classe, que move para direita */
+.switchCircle {
+  margin-left: 24px !important;
 }
 
 /*Cor do ícones no sidebar*/
 #sb-fa-icon {
-    color: #2196F3;
+  color: #2196f3;
 }
 
 /*Div geral do sidebar*/
 .side-bar {
   position: sticky;
   top: 0;
-  background-color:rgb(0, 56, 139);
+  background-color: rgb(14, 34, 63);
   padding-right: 10px;
 }
-
-/*Div dos botões no sidebar*/
-.sb-btns {
-    display: grid;
-    text-align: left;
-    padding-left: 10%;
-    padding-right: 10%;
-    gap:5px;
-    margin-bottom: 30px;
-}
-/*BOTÃO SWITCH */
-/* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 28px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color:aliceblue;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 4px;
-  bottom: 4px;
-  background-color: rgb(7, 201, 239);
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color:aliceblue;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
 </style>

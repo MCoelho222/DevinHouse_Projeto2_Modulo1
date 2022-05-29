@@ -9,7 +9,7 @@ export default {
     mutations: {
         controlSideBar(state) {
             if (state.toggleSideBar) {
-              state.sidebarWidth = 50
+              state.sidebarWidth = 70
               state.toggleSideBar = false
             } else {
               state.sidebarWidth = 300
@@ -19,7 +19,7 @@ export default {
     },
     getters: {
         sidebar(state) {
-            return `width: ${state.sidebarWidth}px; height: 100vh; display: flex; flex-direction: column; justify-content: space-around`
+            return `width: ${state.sidebarWidth}px; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.4s`
           },
         main(state) {
             return `width: calc(100% - ${state.sidebarWidth}px); height: 100%;`

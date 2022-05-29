@@ -7,7 +7,7 @@
 
     <div id="user">
         <span v-text="userName"></span>
-        <vue-gravatar class="gravatar" :email="user" :size="size"/>
+        <vue-gravatar class="gravatar" :email="user" size="45"/>
     </div>
 
 </div>
@@ -21,7 +21,6 @@ export default {
     data() {
         return {
             user: 'teste@teste.com',
-            size: 50,
             userName: 'Username'
         }
     },
@@ -53,10 +52,11 @@ export default {
     top: 0;
     padding-left: 20px;
     padding-right: 20px;
-    background-color:rgb(0, 56, 139);
+    background-color: rgb(14, 34, 63);
     display: flex; 
     flex-direction: row; 
     justify-content: space-between;
+    align-items: center;
 }
 p {
     color: rgb(7, 201, 239);
@@ -67,7 +67,7 @@ p {
 }
 span {
     color: rgb(7, 201, 239);
-    margin-right: 4px;
+    margin-right: 10px;
 }
 
 .gravatar {
