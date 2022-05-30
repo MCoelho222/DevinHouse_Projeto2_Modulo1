@@ -29,7 +29,6 @@ export default {
                         //let index = users.indexOf(element)
                         if (user.password == element.password) {
                             let userAuth = {name: element.name, email: element.email, status: true}
-                            console.log('auth passei')
                             cookies.set('logged', userAuth)
                         } else {
                             state.errorMsg = 'E-mail ou senha incorreta.'
@@ -52,7 +51,7 @@ export default {
                 check.status = false
                 cookies.set('logged', check)
                 // O state então armazena o sinal de logout true
-                state.logoutMsg = 'Você saiu em grande estilo!'
+                state.logoutMsg = 'Já estou com saudades...'
             }
             // Se o cookie foi apagado
             if (check === null) {

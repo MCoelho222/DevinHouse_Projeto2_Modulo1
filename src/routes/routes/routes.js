@@ -9,15 +9,19 @@ import { useCookies } from 'vue3-cookies'
 const cookies = useCookies().cookies
 
 const routes = [
+    // Rota principal, se já estiver logado
+    // Envia para /users
     {path: '/', component: UserLogin, beforeEnter: (to) => {
         let check1 = cookies.get('logged')
         if (check1 !== null) {
             if(check1.status === true) {
-                return to.path = '/users'
+                return to.path = '/users/inventario'
             }
         }
         return true
     }},
+    // Antes de entrar verifica está logado
+    // Se não, envia para login
     {path: '/users', component: Template, beforeEnter: (to) => {
         let check2 = cookies.get('logged')
         if (check2 !== null) {

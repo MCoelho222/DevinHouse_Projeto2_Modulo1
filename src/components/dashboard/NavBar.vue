@@ -1,13 +1,13 @@
 <template>
 <div class="navbar-div">
-
+    <!-- TÍTULO -->
     <div id="title">
         <p>{{path}}</p>
     </div>
-
+    <!-- USER -->
     <div id="user">
         <span v-text="userName"></span>
-        <vue-gravatar class="gravatar" :email="user" size="45"/>
+        <vue-gravatar class="gravatar" :email="user" size="40"/>
     </div>
 
 </div>
@@ -20,18 +20,21 @@ const cookies = useCookies().cookies
 export default {
     data() {
         return {
-            user: 'teste@teste.com',
-            userName: 'Username'
+            user: 'teste@teste.com', // Modificado pelo mounted
+            userName: 'Username' // Modificado pelo mounted
         }
     },
     computed: {
         // Retorna o nome da rota atual
         path() {
+            // Retorna o nome do path
             try {
+                // Se for children
                 let pathInfo = this.$router.currentRoute.value.fullPath
                 let currPath = pathInfo.split('/')[2]
                 return currPath.charAt(0).toUpperCase() + currPath.slice(1)
             } catch (e) {
+                // Se não for children
                 let pathInfo = this.$router.currentRoute.value.fullPath
                 let currPath = pathInfo.split('/')[1]
                 return currPath.charAt(0).toUpperCase() + currPath.slice(1)
@@ -47,6 +50,7 @@ export default {
 }
 </script>
 <style scoped>
+/* Div GERAL */
 .navbar-div {
     position: sticky;
     top: 0;
@@ -58,6 +62,7 @@ export default {
     justify-content: space-between;
     align-items: center;
 }
+/* TÍTULO */
 p {
     color: rgb(7, 201, 239);
     font-size: 1.5em;
@@ -65,11 +70,12 @@ p {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+/* USER NAME */
 span {
     color: rgb(7, 201, 239);
     margin-right: 10px;
 }
-
+/* USER IMAGE */
 .gravatar {
     border-radius: 50%;
 }

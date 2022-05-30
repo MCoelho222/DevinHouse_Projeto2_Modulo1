@@ -1,55 +1,52 @@
 <template>
-    <div>
-        <div class="row">
-
-            <div class="col-7">
-                <div class="container">
-                    <img id="inventory-img" src="../assets/loginimg.png" alt="Inventário">
-                </div>
-                <div class="lab365">
-                    <img id="lab365-img" src="../assets/lab365logo.png" alt="LAB365">
-                </div>
+    <div class="row">
+        <div class="col-7">
+            <div class="container text-center">
+                <img id="inventory-img" src="../assets/loginimg.png" alt="Inventário">
             </div>
-
-            <div class="col-5">
-                <div class="container">
-                    <div class="criar-conta">
-                        <span>Não possui uma conta?</span>
-                        <button 
-                        class="btn btn-outline-info" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#newAccountModal">
-                        Criar conta</button>
-                    </div>
-                    <div class="form">
-                        <h2>Login</h2>
-                        <login-form id="loginform" @submit="auth" :validation-schema="schema" v-slot="{ errors }">
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <login-field type="email" class="form-control" name="email" v-model="user.email"/>
-                                <span class="text-danger" v-text="errors.email" v-show="showMailError"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Senha</label>
-                                <login-field type="password" class="form-control" name="password" v-model="user.password"/>
-                                <span class="text-danger" v-text="errors.password" v-show="showPassError"></span>
-                            </div>
-                            <button class="btn btn-outline-info" type="button" @click="cleanForm">Limpar</button>
-                            <button type="submit" class="btn btn-primary">Entrar</button>
-                        </login-form>
-                        <div class="alternative">
-                            <button id="google" class="btn btn-outline-info" @click="inProgress">Entrar com Google</button>
-                            <p><router-link to="/" @click="inProgress">Esqueceu a senha?</router-link></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="logo">
-                    <img id="dev-inv-img" src="../assets/devinventorylogo.png" alt="Devinventory logo">
-                </div>
+            <div class="lab365">
+                <img id="lab365-img" src="../assets/lab365logo.png" alt="LAB365">
             </div>
         </div>
-        <ModalNewAccount></ModalNewAccount>
+
+        <div class="col-5">
+            <div class="container">
+                <div class="criar-conta">
+                    <span>Não possui uma conta?</span>
+                    <button 
+                    class="btn btn-outline-info" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#newAccountModal">
+                    Criar conta</button>
+                </div>
+                <div class="form">
+                    <h2>Login</h2>
+                    <login-form id="loginform" @submit="auth" :validation-schema="schema" v-slot="{ errors }">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <login-field type="email" class="form-control" name="email" v-model="user.email"/>
+                            <span class="text-danger" v-text="errors.email" v-show="showMailError"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Senha</label>
+                            <login-field type="password" class="form-control" name="password" v-model="user.password"/>
+                            <span class="text-danger" v-text="errors.password" v-show="showPassError"></span>
+                        </div>
+                        <button class="btn btn-outline-info" type="button" @click="cleanForm">Limpar</button>
+                        <button type="submit" class="btn btn-info">Entrar</button>
+                    </login-form>
+                    <div class="alternative">
+                        <button id="google" class="btn btn-outline-info" @click="inProgress">Entrar com Google</button>
+                        <p><router-link id="forgot-link" to="/" @click="inProgress">Esqueceu a senha?</router-link></p>
+                    </div>
+                </div>
+            </div>
+            <div class="logo">
+                <img id="dev-inv-img" src="../assets/InventaryLogonobg.png" alt="Devinventory logo">
+            </div>
+        </div>
     </div>
+    <ModalNewAccount></ModalNewAccount>
 </template>
 <script>
 import { Form, Field } from 'vee-validate'
@@ -92,8 +89,8 @@ export default {
                         // Pega o primeiro nome do usuário
                         let name = confirm.name.split(' ')[0]
                         this.$toast.success(`Bem-vindo(a), ${name}`)
-                        // Direciona usuário para template
-                        this.$router.push('/users/inventario')
+                        location.reload()
+                        this.$loading.show()
                     } else {
                         // Se status: false ou não autenticou, mostra msg
                         this.$toast.error(this.$store.state.auth.errorMsg)
@@ -104,14 +101,22 @@ export default {
             if (confirm === null) { 
                 this.$store.commit('auth/authUser', {...this.user})
                 confirm = cookies.get('logged')
+                if (confirm != null) {
                     if(confirm.status === true) {
-                        this.$toast.success('Bem-vindo, usuário!')
+                        let name = confirm.name.split(' ')[0]
+                        this.$toast.success(`Bem-vindo(a), ${name}`)
                         // Direciona usuário para o inventario
                         this.$router.push('/users/inventario')
                     } else {
                         // Mostra mensagem referente ao tipo de erro
                         this.$toast.error(this.$store.state.auth.errorMsg)
                     }
+
+                } else {
+                    // Mostra mensagem referente ao tipo de erro
+                    this.$toast.error(this.$store.state.auth.errorMsg)
+                }
+                    
             }
             let form = document.getElementById('loginform')
             form.reset()
@@ -157,7 +162,7 @@ export default {
         if (cookies.get('logged') !== null) {
             if (cookies.get('logged').status === true) {
                 this.$router.push('/users')
-                this.$toast.success('Você já está logado!', {position: 'top-right'})
+                //this.$toast.success('Você já está logado!', {position: 'top-right'})
             }
         }
         
@@ -165,10 +170,31 @@ export default {
 }
 </script>
 <style scoped>
+/* Div geral */
+.row {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 100%;
+}
 /* Coluna da imagem grande */
 .col-7 {
-    padding: 150px 100px 10px 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 150px 20px 10px 10px;
     background-color: aliceblue;
+}
+/* Div da Coluna de login */
+.col-5 {
+    background-color: rgb(14, 34, 63);
+    padding-right: 40px;
+    padding-left: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 /* Imagem grande */
 #inventory-img {
@@ -193,38 +219,19 @@ export default {
 /* Div do botão criar conta */
 .criar-conta {
     text-align: right;
-}
-/* Div da Coluna de login */
-.col-5 {
-    padding-right: 40px;
-    padding-left: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-/* Div geral */
-.row {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-height: 100%;
-}
-/* Div da imagem grande e (form + botão criar conta) */
-.container {
-    text-align: left;
+    margin-bottom: 30px;
 }
 /* Div do form */
 #loginform {
     margin-top: 40px;
     margin-bottom: 40px;
-    padding-right: 120px;
+    padding-right: 80px;
 }
 /* Div do botão Entrar com Google e esqueceu senha? */
 .alternative {
     display:block;
     text-align: center;
+    padding-right:70px;
 }
 /* Div do devinvetory logo */
 .logo {
@@ -234,5 +241,13 @@ export default {
 /* Botão Entrar com Google */
 #google {
     margin-bottom: 20px;
+}
+h2, .form-label, #forgot-link {
+    color: rgb(7, 201, 239);
+    margin-bottom: 1px;
+}
+.toasting {
+    background-color: rgb(14, 34, 63) !important;
+    color: rgb(7, 201, 239) !important;
 }
 </style>

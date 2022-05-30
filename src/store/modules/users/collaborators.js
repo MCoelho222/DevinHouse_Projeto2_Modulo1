@@ -15,8 +15,11 @@ export default {
         setSelectedId(state, value) {
             state.selectedId = value
         },
+        // Recebe o objeto com os dados do colaborador
         saveCollab(state, collab) {
+            // Traz as informações de CEP do colaborador
             let addressInfo = state.cepInfo
+            // Retira a key "complemento do objeto"
             let cleanInfo = {}
             for (const [key, value] of Object.entries(addressInfo)) {
                 if (key !== 'complemento') {
@@ -26,6 +29,7 @@ export default {
             let collabObj = {...collab, ...cleanInfo}
             try {
                 state.saveSuccess = false
+                // Se localstorage estiver vazio
                 if (localStorage.getItem('collaborators') === null) {
                     let collaborators = []
                     collabObj.id = 1
@@ -33,8 +37,10 @@ export default {
                     localStorage.setItem('collaborators', JSON.stringify(collaborators))
                     state.saveSuccess = true
                 } else {
+                    // Se localstorage contém uma lista
                     let collabList = JSON.parse(localStorage.getItem('collaborators'))
                     let already = false
+                    // Verifica se já está cadastrado
                     collabList.forEach(item => {
                         let firstName = item.nome.split(' ')[0]
                         let collabFirstName = collabObj.nome.split(' ')[0]
@@ -46,6 +52,7 @@ export default {
                             localStorage.setItem('collaborators', JSON.stringify(collabList))
                         }
                     })
+                    // Se não tiver, insere e salva
                     if (!already) {
                         let index = collabList.length + 1
                         collabObj.id = index
@@ -55,10 +62,12 @@ export default {
                     } 
                 }
             } catch(e) {
+                // Se der algum problema
                 state.saveSuccess = false
             }
         },
-        getCollab(state) {
+        // Obtém a lista de colaboradores
+        getCollabs(state) {
             let collabs = JSON.parse(localStorage.getItem('collaborators'))
             if (collabs !== null) {
                 state.collabs = collabs
@@ -67,14 +76,16 @@ export default {
         }
     },
     actions: {
+        // Recebe o CEP do novo ou colaborador editado
+        // Verifica se o CEP é válido
         cepInfo(context, cep) {
-
+            // Verifica se o CEP é válido
             axios.get(`https://viacep.com.br/ws/${cep}/json/`).then(response => {
 
                 if (response.data.erro === 'true') {
                     context.state.errorMsg = 'CEP inválido.'
                 } else {
-
+                    // Se válido, popula os inputs relacionados ao CEP
                     let localidade = document.getElementById('localidade')
                     let bairro = document.getElementById('bairro')
                     let logradouro = document.getElementById('logradouro')
@@ -83,14 +94,15 @@ export default {
                     bairro.value = response.data.bairro
                     logradouro.value = response.data.logradouro
                     uf.value = response.data.uf
-                    
+                    // State. cepInfo recebe o objeto com informações do CEP
                     context.state.cepInfo = response.data
                 }
             }).catch(() => {
-
+                // No caso de qualquer outro erro na requisição
                 context.state.errorMsg = 'CEP inválido.'
             })
-
+            // Reseta o errorMsg para false após 5 seg. 
+            // para não ficar aparecendo no input
             setTimeout(() => {context.state.errorMsg = false}, 5000)
         }
     },

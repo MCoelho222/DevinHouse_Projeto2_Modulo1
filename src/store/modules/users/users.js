@@ -38,11 +38,5 @@ export default {
                 state.success = true
             }
         }
-    },
-    actions: {
-
-    },
-    getters: {
-        
     }
 }

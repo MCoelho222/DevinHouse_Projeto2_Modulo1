@@ -1,5 +1,6 @@
 <template>
     <div class="cadastroItem">
+    <!-- TÍTULO e SWITCH -->
         <div class="header">
             <p>Preencha os campos para cadastrar</p>
             <div>
@@ -10,80 +11,166 @@
                 </label>
              </div>
         </div>
-        
+        <!-- FORM CADASTRO ITEM -->
         <div class="container">
-            <newitem-form @submit="saveItem" id="newitem-form" :validation-schema="schema" v-slot="{ errors }">
+            <newitem-form 
+            @submit="saveItem" 
+            id="newitem-form" 
+            :validation-schema="schema" 
+            v-slot="{ errors }">
                 <div class="row mb-2">
                     <div class="col-3">
                         <label class="form-label">Código de patrimônio</label>
-                        <newitem-field type="text" class="form-control" name="patrimonio" v-model="item.patrimonio" :disabled="disabled" placeholder="XX9999-999"/>
-                        <span class="text-danger" v-text="errors.patrimonio" v-show="errors.patrimonio"></span>
+                        <newitem-field 
+                        type="text" 
+                        class="form-control" 
+                        name="patrimonio" 
+                        v-model="item.patrimonio" 
+                        :disabled="disabled" 
+                        placeholder="XX9999-999"/>
+                        <span 
+                        class="text-danger" 
+                        v-text="errors.patrimonio" 
+                        v-show="errors.patrimonio">
+                        </span>
                     </div>
                     <div class="col-6">
                         <label class="form-label">Título</label>
-                        <newitem-field type="text" class="form-control" name="titulo" v-model="item.titulo" :disabled="disabled"/>
-                        <span class="text-danger" v-text="errors.titulo" v-show="errors.titulo"></span>
+                        <newitem-field 
+                        type="text" 
+                        class="form-control" 
+                        name="titulo" 
+                        v-model="item.titulo" 
+                        :disabled="disabled"/>
+                        <span 
+                        class="text-danger" 
+                        v-text="errors.titulo" 
+                        v-show="errors.titulo">
+                        </span>
                     </div>
                     <div class="col-3">
                         <label class="form-label">Categoria</label>
-                        <!--<newitem-field type="text" class="form-control" name="categoria" v-model="item.categoria" :disabled="disabled"/>-->
-                        <newitem-field as="select" class="form-select" aria-label="Default select example" name="categoria" v-model="item.categoria" :disabled="disabled">
+                        <newitem-field 
+                        as="select" 
+                        class="form-select" 
+                        name="categoria" 
+                        v-model="item.categoria" 
+                        :disabled="disabled">
                             <option value="Eletrônicos">Eletrônicos</option>
                             <option value="Móveis">Móvel</option>
                             <option value="Acessórios">Acessórios</option>
                         </newitem-field>
-                        <span class="text-danger" v-text="errors.categoria" v-show="errors.categoria"></span>
+                        <span 
+                        class="text-danger" 
+                        v-text="errors.categoria" 
+                        v-show="errors.categoria">
+                        </span>
                     </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-3">
                         <label class="form-label">Valor R$</label>
-                        <newitem-field type="text" class="form-control" name="valor" v-model="item.valor" :disabled="disabled" placeholder="9999,99" />
-                        <span class="text-danger" v-text="errors.valor" v-show="errors.valor"></span>
+                        <newitem-field 
+                        type="text" 
+                        class="form-control" 
+                        name="valor" 
+                        v-model="item.valor" 
+                        :disabled="disabled" 
+                        placeholder="9999,99" />
+                        <span 
+                        class="text-danger" 
+                        v-text="errors.valor" 
+                        v-show="errors.valor">
+                        </span>
                     </div>
                     <div class="col-9">
                         <label class="form-label">URL do produto</label>
-                        <newitem-field type="text" class="form-control" name="url" v-model="item.url" :disabled="disabled"/>
-                        <span class="text-danger" v-text="errors.url" v-show="errors.url"></span>
+                        <newitem-field 
+                        type="text" 
+                        class="form-control" 
+                        name="url" 
+                        v-model="item.url" 
+                        :disabled="disabled"/>
+                        <span 
+                        class="text-danger" 
+                        v-text="errors.url" 
+                        v-show="errors.url">
+                        </span>
                     </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-6">
                         <label class="form-label">Marca</label>
-                        <newitem-field type="text" class="form-control" name="marca" v-model="item.marca" :disabled="disabled"/>
-                        <span class="text-danger" v-text="errors.marca" v-show="errors.marca"></span>
+                        <newitem-field 
+                        type="text" 
+                        class="form-control" 
+                        name="marca" 
+                        v-model="item.marca" 
+                        :disabled="disabled"/>
+                        <span 
+                        class="text-danger" 
+                        v-text="errors.marca" 
+                        v-show="errors.marca">
+                        </span>
                     </div>
                     <div class="col-6">
                         <label class="form-label">Modelo</label>
-                        <newitem-field type="text" class="form-control" name="modelo" v-model="item.modelo" :disabled="disabled"/>
-                        <span class="text-danger" v-text="errors.modelo" v-show="errors.modelo"></span>
+                        <newitem-field 
+                        type="text" 
+                        class="form-control" 
+                        name="modelo" 
+                        v-model="item.modelo" 
+                        :disabled="disabled"/>
+                        <span 
+                        class="text-danger" 
+                        v-text="errors.modelo" 
+                        v-show="errors.modelo">
+                        </span>
                     </div>
                 </div>
                 <div class="row mb-2">
                 <div class="col-12">
-                    <label for="exampleFormControlTextarea1" class="form-label">Descrição</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" name="descricao" rows="3" v-model="item.descricao" :disabled="disabled"></textarea>
+                    <label class="form-label">Descrição</label>
+                    <textarea 
+                    id="text-area"
+                    class="form-control" 
+                    name="descricao" 
+                    rows="3" 
+                    v-model="item.descricao" 
+                    :disabled="disabled">
+                    </textarea>
                 </div>
                 </div>
                 <div class="modal-footer">
-                <button class="btn btn-outline-secondary" type="button" @click="cleanForm">Limpar</button>
-                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button 
+                class="btn btn-outline-info" 
+                type="button" 
+                @click="cleanForm">
+                Limpar
+                </button>
+                <button 
+                type="submit" 
+                class="btn btn-info">
+                Salvar
+                </button>
                 </div>
           </newitem-form>
         </div>
     </div>
 </template>
 <script>
+
 import { Form, Field } from 'vee-validate'
 import rules from '../validations/validateitens'
 
 rules
 
-
 export default {
+
     components: {
-    "newitem-form": Form,
-    "newitem-field": Field,
+
+        "newitem-form": Form,
+        "newitem-field": Field,
     },
     data() {
         return {
@@ -96,28 +183,29 @@ export default {
                 marca: 'required',
                 modelo: 'required'
             },
-            item: {},
-            disabled: true
+            item: {}, // Recebe os inputs
+            disabled: true // Inputs desabilitados
         }
     },
     methods: {
+        // Salva no objeto itens no localstorage
         saveItem() {
-            if (localStorage.getItem('itens') === null) {
-                let itens = []
-                itens.push(this.item)
-                localStorage.setItem('itens', JSON.stringify(itens))
-            } else {
-                let list = JSON.parse(localStorage.getItem('itens'))
-                list.push(this.item)
-                localStorage.setItem('itens', JSON.stringify(list))
+            this.item.emprestado = 'Item disponível'
+            this.$store.commit('itens/saveItem', {...this.item})
+            let saved = this.$store.state.itens.saved
+            if (saved) {
+                this.$toast.success('Item salvo!')
             }
             let form = document.getElementById('newitem-form')
+            let description = document.getElementById('text-area')
+            description.reset()
             form.reset()
         },
         cleanForm() {
             let form = document.getElementById('newitem-form')
             form.reset() 
         },
+        // habilita/desabilita edição dos campos
         edit() {
             if (this.disabled) {
                 this.disabled = false
@@ -125,59 +213,54 @@ export default {
                 this.disabled = true
             }
         }
-      
-    },
-    computed: {
-      
     }
 }
 </script>
 <style scoped>
+/* TÍTULO */
 p {
-    font-size: 1.5em;
+    font-size: 1.8em;
     margin-bottom: 40px;
 }
-
+/* Span ao lado do SWITCH */
 #switch-editar {
     margin: 6px;
 }
+/* Form LABELS */
 .form-label {
     margin-bottom: 2px;
     font-size: 1em;
 }
+/* TÍTULO E SWITCH div */
 .header {
     display: flex; 
     flex-direction: row; 
     justify-content: space-between;
-    
 }
+/* Div GERAL */
 .cadastroItem {
     padding: 50px;
-    background-color: aliceblue;
     min-height: 100%;
 }
+/* FORM div */
 .container
  {
      text-align: left;
      background-color: aliceblue;
      padding: 30px;
-     
  }
-
-
+/* SWITCH */
  .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
 }
-
 .switch input { 
   opacity: 0;
   width: 0;
   height: 0;
 }
-
 .slider {
   position: absolute;
   cursor: pointer;
@@ -189,7 +272,6 @@ p {
   -webkit-transition: .4s;
   transition: .4s;
 }
-
 .slider:before {
   position: absolute;
   content: "";
@@ -201,26 +283,21 @@ p {
   -webkit-transition: .4s;
   transition: .4s;
 }
-
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: rgb(7, 201, 239);
 }
-
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px rgb(7, 201, 239);
 }
-
 input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
-
 /* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
-
 .slider.round:before {
   border-radius: 50%;
 }

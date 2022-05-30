@@ -1,12 +1,29 @@
 <template>
+    <!-- Componente CARD MEDIUM SIZE -->
     <label>
-        <div id="modal-btn" data-bs-toggle="modal" :data-bs-target="cardType == 'inventory' ? '#editItemModal' : '#collabModal'" @click="cardType == 'inventory' ? editItem(item): collabDetails(item)">
-            <img v-if="cardType == 'inventory'" class="img" :src="img" alt="">
-            <vue-gravatar class="gravatar rounded-circle" :email="img" size="100" v-else/>
+        <div 
+        id="modal-btn" 
+        data-bs-toggle="modal" 
+        :data-bs-target="cardType == 'inventory' ? '#editItemModal' : '#collabModal'" 
+        @click="method">
+        <!-- cardType define se imagem ou gravatar -->
+            <img 
+            v-if="cardType == 'inventory'" 
+            class="img" 
+            :src="img" 
+            alt="Imagem do item">
+            <vue-gravatar 
+            class="gravatar rounded-circle" 
+            :email="img" size="100" v-else/>
             <span class="first mb-3 mt-3 lh-1 fw-bold">{{ first }}</span>
             <p class="second">{{ second }}</p>
             <p class="third">{{ third }}</p>
-            <span class="fourth" v-if="cardType == 'inventory' && (fourth == 'Item disponível' || fourth == '')">Na empresa</span>
+            <!-- cardType define se <span/> ou <p/> -->
+            <span 
+            class="fourth" 
+            v-if="cardType == 'inventory' && (fourth == 'Item disponível' || fourth == '')">
+            Na empresa
+            </span>
             <span class="fourth" v-else-if="cardType == 'inventory'">{{fourth}}</span>
             <p class="fourth" v-else-if="cardType == 'user-list'">{{ fourth }}</p>
         </div>
@@ -14,6 +31,7 @@
 </template>
 <script>
 export default {
+    // Propiedades a serem passadas nas views
     props: {
         img: {
             type: String
@@ -33,38 +51,20 @@ export default {
         cardType: {
             type: String
         },
-        item: {
+        // Method chamado em @click
+        method: {
 
         }
     },
-    data() {
-        return {
-
-        }
-    },
-    methods: {
-        collabDetails(item) {
-            let oldValue = this.$store.getters['collaborators/sendSelectedId']
-
-            if(oldValue == item.id){
-                this.$store.commit('collaborators/setSelectedId', null)
-            }else{
-                this.$store.commit('collaborators/setSelectedId', item.id)
-            }
-        },
-         editItem(item) {
-            this.$store.commit('itens/editItem', item)
-            // let form = document.getElementById('search-item-form')
-            // form.reset()
-        },
-    }
 }
 </script>
 <style scoped>
+/* Imagem dos CARDS type=inventory */
 img {
 max-width: 150px;
 max-height: 100px;
 }
+/* span abaixo da img ou gravatar */
 .first {
     display: -webkit-box;
     overflow: hidden;
@@ -72,6 +72,7 @@ max-height: 100px;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
+/* Container geral do CARD */
 label {
     display: flex;
     justify-content: center;
@@ -83,6 +84,7 @@ label {
     padding: 20px;
     text-align: center;
 }
+/* <p></p> base do CARD */
 .fourth {
     
     font-weight: bold;

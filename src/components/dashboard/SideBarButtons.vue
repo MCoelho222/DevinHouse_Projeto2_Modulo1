@@ -1,6 +1,7 @@
 <template>
+<!-- SIDEBAR BUTTONS -->
   <div class="sb-btns">
-    <label for="">{{ title }}</label>
+    <label>{{ title }}</label>
     <button type="button" class="btn btn-outline-info" @click="method1">
       <i :class="icon1"></i>
       {{ btn1 }}
@@ -56,6 +57,9 @@ label {
 
 button {
     text-align: left;
-    font-size: small;
+    font-size: 11pt;
+}
+i {
+    margin-right: 10px;
 }
 </style>

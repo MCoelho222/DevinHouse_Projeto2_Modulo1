@@ -1,6 +1,7 @@
 <template>
   <div class="template">
     <proj-sidebar></proj-sidebar>
+    <!-- main traz o estilo da tela de conteúdos -->
     <div class="router" :style="main">
       <proj-navbar></proj-navbar>
       <router-view></router-view>
@@ -11,38 +12,28 @@
 
 import SideBar from "../components/dashboard/SideBar"
 import NavBar from '../components/dashboard/NavBar'
-// import { useCookies } from 'vue3-cookies'
 
-//const cookies = useCookies().cookies
 export default {
   components: {
     "proj-sidebar": SideBar,
     'proj-navbar': NavBar
   },
   computed: {
+    // Quando o SideBar reduzir o width, 
+    // o width do main será recalculado na store
     main() {
       return this.$store.getters['template/main']
     },
   },
-  // mounted() {
-  //   if (cookies.get('logged') !== null) {
-  //           if (cookies.get('logged').status === true) {
-  //               this.$toast.info('Você está logado!', {position: 'top-right'})
-  //           }
-  //       }
-  // }
-  
 }
 </script>
 <style scoped>
+
+/* Alinha o SideBar e main lado a lado */
 .template {
   background-color: aliceblue;
   display: flex; 
   flex-direction: row; 
-}
-.router {
-  display:flex;
-  flex-direction:column;
 }
 
 </style>

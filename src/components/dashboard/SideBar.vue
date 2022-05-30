@@ -1,9 +1,14 @@
 <template>
   <div class="side-bar p-2" :style="sidebar">
+    <!-- DEVINVENTORY LOGO -->
     <div class="sb-icon text-center">
-      <img id="logo" src="../../assets/InventaryLogonobg.png" alt="DevInventary Logo" />
+      <img
+        id="logo"
+        src="../../assets/InventaryLogonobg.png"
+        alt="DevInventary Logo"
+      />
     </div>
-
+    <!-- BUTTONS toggleSideBar=true-->
     <div class="btns-div" v-show="toggleSideBar">
       <SideBarButtons
         title="Geral"
@@ -24,10 +29,10 @@
         btn2="Listar"
         :method2="listaUsers"
       />
-      
+
       <SideBarButtons
         title="Itens"
-        icon1="fa-solid fa-user-plus"
+        icon1="fa-solid fa-circle-plus"
         btn1="Cadastrar"
         :method1="cadastraItens"
         icon2="fa-solid fa-share-nodes"
@@ -35,30 +40,19 @@
         :method2="emprestaItens"
       />
     </div>
+    <!-- BUTTONS toggleSideBar=false-->
     <div class="text-center" v-show="!toggleSideBar">
       <div class="col mb-5">
-        <div class="onlyIcon">
-          <i class="fa-solid fa-chart-simple" @click="inventario"></i>
-        </div>
-        <div class="onlyIcon">
-          <i class="fa-solid fa-arrow-right-from-bracket" @click="sair"></i>
-        </div>
+        <SmallIcon icon="fa-solid fa-chart-simple" :method="inventario" />
+        <SmallIcon icon="fa-solid fa-arrow-right-from-bracket" :method="sair" />
       </div>
       <div class="col mb-5">
-        <div class="onlyIcon">
-          <i class="fa-solid fa-user-plus" @click="cadastraUser"></i>
-        </div>
-        <div class="onlyIcon">
-          <i class="fa-solid fa-list" @click="listaUsers"></i>
-        </div>
+        <SmallIcon icon="fa-solid fa-user-plus" :method="cadastraUser" />
+        <SmallIcon icon="fa-solid fa-list" :method="listaUsers" />
       </div>
       <div class="col mb-5">
-        <div class="onlyIcon">
-          <i class="fa-solid fa-user-plus" @click="cadastraItens"></i>
-        </div>
-        <div class="onlyIcon">
-          <i class="fa-solid fa-share-nodes" @click="emprestaItens"></i>
-        </div>
+        <SmallIcon icon="fa-solid fa-circle-plus" :method="cadastraItens" />
+        <SmallIcon icon="fa-solid fa-share-nodes" :method="emprestaItens" />
       </div>
     </div>
     <!-- div geral do switch -->
@@ -66,32 +60,34 @@
       <!-- body do switch -->
       <div id="switchBody" @click="toggleSwitch">
         <!-- Switch circle -->
-        <div id="switchCircle">
-        </div>
+        <div id="switchCircle"></div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import SideBarButtons from "./SideBarButtons.vue";
+import SmallIcon from "../SmallIcon.vue";
+
 export default {
+  components: { SideBarButtons, SmallIcon },
   methods: {
     // Hide/show sidebar
     toggleSwitch() {
       // Switch circle
       let switchCircle = document.getElementById("switchCircle");
       let switchDiv = document.getElementById("switchDiv");
-      let logoImg = document.getElementById('logo');
+      let logoImg = document.getElementById("logo");
       // Se não tiver classe switchCircle, adiciona
       if (switchCircle.className != "switchCircle") {
         switchCircle.className = "switchCircle";
-        switchDiv.style.justifyContent = 'center'
-        logoImg.style.width = '60px'
+        switchDiv.style.justifyContent = "center";
+        logoImg.style.width = "60px";
       } else {
         // Se houver, apaga
         switchCircle.className = "";
-        switchDiv.style.justifyContent = 'right'
-        logoImg.style.width = 'auto'
+        switchDiv.style.justifyContent = "right";
+        logoImg.style.width = "auto";
       }
       this.$store.commit("template/controlSideBar");
     },
@@ -117,38 +113,20 @@ export default {
     },
   },
   computed: {
+    // Retorna o estilo do sideBar
     sidebar() {
       return this.$store.getters["template/sidebar"];
     },
+    // Controla o sideBar e tipos de botões
     toggleSideBar() {
       return this.$store.state.template.toggleSideBar;
     },
   },
-  components: { SideBarButtons },
-
 };
 </script>
 <style scoped>
-label, i {
+label {
   color: rgb(7, 201, 239);
-}
-.onlyIcon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  border: 1px solid rgb(7, 201, 239);
-  padding: 6px 12px;
-  margin-right: 0px;
-  margin-bottom: 10px;
-  width: 34px;
-  height: 34px;
-}
-.onlyIcon:hover {
-  background-color: rgb(7, 201, 239);
-}
-.onlyIcon:hover i {
-  color: rgb(14, 34, 63)
 }
 /* Div geral do switch */
 #switchDiv {
