@@ -51,13 +51,13 @@ export default {
                 check.status = false
                 cookies.set('logged', check)
                 // O state então armazena o sinal de logout true
-                state.logoutMsg = 'Já estou com saudades...'
+                state.logoutMsg = 'Logout efetuado com sucesso.'
             }
             // Se o cookie foi apagado
             if (check === null) {
                 // o state armazena o sinal
                 //state.alreadyLogout = true
-                state.logoutMsg = 'Você já saiu!'
+                state.logoutMsg = 'Você já efetuou o logout!'
             }
         }
     },

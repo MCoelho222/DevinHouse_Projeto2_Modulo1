@@ -31,11 +31,11 @@ const routes = [
         }
         return true
     }, children: [
-        {path: 'lista-usuarios', component: ListaUsuarios},
+        {path: 'colaboradores', component: ListaUsuarios},
         {path: 'inventario', component: InventoryBook},
         {path: 'emprestar', component: EmprestaItem},
         {path: 'cadastro-item', component: CadastroItem},
-        {path:'cadastro-usuario', component: CadastroUsuario}
+        {path:'cadastro-colaborador', component: CadastroUsuario}
     ]},
     
     

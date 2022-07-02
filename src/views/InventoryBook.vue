@@ -1,5 +1,6 @@
 <template>
     <div class="container p-4">
+
         <!-- CARDS DE ESTATÍSTICAS do inventário -->
         <div class="row data-card">
             <SmallCard 
@@ -23,6 +24,7 @@
             :footer="'Emprestados'">
             </SmallCard>
         </div>
+
         <!-- BARRA DE BUSCA de item -->
         <div id="inv-search-div">
             <label 
@@ -37,6 +39,7 @@
             placeholder="Digite para buscar..." 
             @input="setItems">
         </div>
+
         <!-- CARDS do inventário -->
         <div id="inv-cards">
             <div class="inv-card shadow" v-for="item in items" :key="item.id">
@@ -47,10 +50,12 @@
                 :second="item.marca" 
                 :third="item.modelo" 
                 :fourth="item.emprestado" 
-                :method="editItem(item.patrimonio)">
+                :method="editItem(item.patrimonio)" 
+                @click="editItem(item.patrimonio)">
                 </MediumCard>
             </div>
         </div>
+
         <!-- MODAL para edição de item -->
         <ModalEditItem></ModalEditItem>
     </div>
@@ -78,15 +83,13 @@ export default {
     methods: {
         editItem(num) {
             this.$store.commit('itens/editItem', num)
-            // let form = document.getElementById('search-item-form')
-            // form.reset()
         },
         // Chamado pela barra de busca
         // Filtra os cards apresentados em tela
         setItems() {
             // Barra de busca
             let inputItem = document.getElementById('search-item')
-            // // Obtém a lista de itens na store
+            // Obtém a lista de itens na store
             let allItems = this.$store.state.itens.sendItens
             // Se o input estiver vazio
             if (inputItem == null){
@@ -100,7 +103,7 @@ export default {
                 allItems.forEach(item => {
                     // Em cada item percorre as keys 
                     // Se encontrar o caracter ou caracteres digitados
-                    // Insere o item na nova lista
+                    // insere o item na nova lista
                     for (const [key] of Object.entries(item)) {
                         // Transforma tudo para minúsculo e verifica se o caracter possui um index 
                         if (item[key].toLowerCase().indexOf(inputItem.value.toLowerCase()) !== -1) {
@@ -134,14 +137,15 @@ export default {
     // Carrega store com dados do localstorage
     // Calcula as estatísticas
     mounted() {
-        // Chama mutations para obter a LISTA DE ITENS do localStorage
+        // Obtém LISTA DE ITENS
         this.$store.commit('itens/getItens')
-        // Chama mutation para obter os CÁLCULOS dos SMALL CARDS
+        // Gera as ESTATÍSTICAS dos SMALL CARDS
         this.$store.commit('itens/itemStats')
+        // Popula lista de ESTATÍSTICAS
         this.invStats = this.$store.state.itens.stats
-        // Chama mutation para obter LISTA DE COLABORADORES
+        // Obtém LISTA DE COLABORADORES
         this.$store.commit('collaborators/getCollabs')
-        // POPULA a LISTA DE ITENS no state
+        // Popula lista de ITENS
         this.items = this.$store.state.itens.sendItens
     }
 }

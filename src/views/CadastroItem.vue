@@ -11,7 +11,7 @@
                 </label>
              </div>
         </div>
-        <!-- FORM CADASTRO ITEM -->
+        <!-- FORM Cadastro de Item -->
         <div class="container">
             <newitem-form 
             @submit="saveItem" 
@@ -194,11 +194,9 @@ export default {
             this.$store.commit('itens/saveItem', {...this.item})
             let saved = this.$store.state.itens.saved
             if (saved) {
-                this.$toast.success('Item salvo!')
+                this.$toast.info('Item salvo com sucesso.', {position: 'top'})
             }
             let form = document.getElementById('newitem-form')
-            let description = document.getElementById('text-area')
-            description.reset()
             form.reset()
         },
         cleanForm() {

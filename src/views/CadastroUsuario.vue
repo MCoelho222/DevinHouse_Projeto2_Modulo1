@@ -10,7 +10,7 @@
                 </label>
             </div>
         </div>
-        <!-- FORMULÁRIO CADASTRO DE COLABORADOR -->
+        <!-- FORM Cadastro de Colaborador -->
         <div class="container">
             <h5>Dados pessoais</h5>
             <collab-form 
@@ -256,6 +256,7 @@ export default {
         }
     },
     methods: {
+
         // Chamado quando houver 8 caracteres ou mais no input CEP
         getCepInfo() {
             if(this.cepNum.length >= 8) {
@@ -268,7 +269,7 @@ export default {
             this.$store.commit('collaborators/saveCollab', {...this.collab})
             let saved = this.$store.state.collaborators.saveSuccess
             if (saved) {
-                this.$toast.success('Item salvo!')
+                this.$toast.info('Dados do colaborador salvos com sucesso.', {position: 'top'})
             }
             let form = document.getElementById('collab-form')
             form.reset()

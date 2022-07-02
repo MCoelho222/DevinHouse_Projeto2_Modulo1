@@ -150,7 +150,7 @@
           class="btn btn-outline-danger" 
           data-bs-dismiss="modal" 
           @click="delItem">
-          Deletar item
+          Excluir
           </button>
           <button 
           type="button" 
@@ -177,9 +177,7 @@ import { Form, Field } from 'vee-validate'
 import rules from '../validations/validateitens'
 
 rules
-
 export default {
-
     components: {
 
       "editItem-form": Form,
@@ -209,7 +207,7 @@ export default {
             if (saved) {
               location.reload()
               this.$loading.show()
-              this.$toast.success('Item salvo!')
+              this.$toast.info('Item salvo!', {position: 'top-right'})
             }
         let form = document.getElementById('editItem-form')
         form.reset()

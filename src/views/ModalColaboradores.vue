@@ -212,6 +212,13 @@
         </div>
         <!-- Botões SAIR e SALVAR -->
         <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-outline-danger" 
+          data-bs-dismiss="modal" 
+          @click="delCollab">
+          Excluir
+          </button>
           <button 
           type="button" 
           class="btn btn-outline-info" 
@@ -299,6 +306,15 @@ export default {
             this.$store.commit('collaborators/saveCollab', {...this.collab})
             let form = document.getElementById('collab-form')
             form.reset()
+            let saved = this.$store.state.collaborators.saveSuccess
+            if (saved) {
+              location.reload()
+              this.$loading.show()
+              this.$toast.info('Item salvo!', {position: 'top-right'})
+            }
+        },
+        delCollab() {
+            this.$store.commit('collaborators/delCollab', this.collab.telefone)
         },
         cleanForm() {
             let form = document.getElementById('collab-form')

@@ -16,16 +16,18 @@ export default {
             state.selectedId = value
         },
         // Recebe o objeto com os dados do colaborador
+        // Em caso de edição de colaborador cadastrado ou novo cadastro
         saveCollab(state, collab) {
             // Traz as informações de CEP do colaborador
             let addressInfo = state.cepInfo
-            // Retira a key "complemento do objeto"
+            // Retira a key "complemento" do objeto
             let cleanInfo = {}
             for (const [key, value] of Object.entries(addressInfo)) {
                 if (key !== 'complemento') {
                     cleanInfo[key] = value
                 }
             }
+            // Objeto com as informações sobre o colaborador
             let collabObj = {...collab, ...cleanInfo}
             try {
                 state.saveSuccess = false
@@ -46,13 +48,15 @@ export default {
                         let collabFirstName = collabObj.nome.split(' ')[0]
                         if (item.nascimento === collabObj.nascimento && firstName === collabFirstName) {
                             already = true
+                            // Etapa para casos de edição
                             let index = collabList.indexOf(item)
                             item = {...collabObj}
                             collabList[index] = item
                             localStorage.setItem('collaborators', JSON.stringify(collabList))
+                            state.saveSuccess = true
                         }
                     })
-                    // Se não tiver, insere e salva
+                    // Se não houver nenhum registro, insere e salva
                     if (!already) {
                         let index = collabList.length + 1
                         collabObj.id = index
@@ -73,6 +77,14 @@ export default {
                 state.collabs = collabs
             }
 
+        },
+        delCollab(state, collab) {
+            let allCollabs = JSON.parse(localStorage.getItem('collaborators'))
+            // Filtra o array pelo telefone
+            let newCollabs = allCollabs.filter(item => item.telefone !== collab)
+            // Salva o array atualizado no localStorage
+            localStorage.setItem('collaborators', JSON.stringify(newCollabs))
+            location.reload()
         }
     },
     actions: {

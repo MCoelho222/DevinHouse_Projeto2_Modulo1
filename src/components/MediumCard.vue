@@ -4,8 +4,7 @@
         <div 
         id="modal-btn" 
         data-bs-toggle="modal" 
-        :data-bs-target="cardType == 'inventory' ? '#editItemModal' : '#collabModal'" 
-        @click="method">
+        :data-bs-target="cardType == 'inventory' ? '#editItemModal' : '#collabModal'">
         <!-- cardType define se imagem ou gravatar -->
             <img 
             v-if="cardType == 'inventory'" 
@@ -50,10 +49,6 @@ export default {
         },
         cardType: {
             type: String
-        },
-        // Method chamado em @click
-        method: {
-
         }
     },
 }

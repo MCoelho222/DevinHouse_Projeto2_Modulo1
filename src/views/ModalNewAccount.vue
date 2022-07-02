@@ -17,6 +17,7 @@
           </button>
         </div>
         <div class="modal-body">
+        <!-- FORM with fields NOME, EMAIL, SENHA -->
           <newuser-form 
           id="registerform" 
           :validation-schema="schema" 
@@ -64,6 +65,7 @@
               </div>
           </newuser-form>
         </div>
+        <!-- BUTTONS -->
         <div class="modal-footer">
           <button 
           type="button" 
@@ -117,7 +119,7 @@ export default {
         // Se houver successo na criação da conta
         let success = this.$store.state.users.success
         if (success) {
-          this.$toast.success('Conta criada com sucesso!')
+          this.$toast.info('Conta criada com sucesso!', {position: 'top-right'})
         }
         if (!success) {
           this.$toast.warning('E-mail já cadastrado.', {position: 'top-right'})

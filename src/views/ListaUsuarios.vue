@@ -25,7 +25,7 @@
             :second="collab.email" 
             :third="`(${collab.telefone.substring(0, 2)}) ${collab.telefone.substring(2, 3)} ${collab.telefone.substring(3, 11)}`" 
             :fourth="collab.cargo" 
-            :method="collabDetails(collab)">
+            @click="collabDetails(collab)">
             </MediumCard>
         </div>
     </div>

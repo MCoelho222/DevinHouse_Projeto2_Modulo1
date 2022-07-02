@@ -1,5 +1,6 @@
 <template>
   <div class="side-bar p-2" :style="sidebar">
+
     <!-- DEVINVENTORY LOGO -->
     <div class="sb-icon text-center">
       <img
@@ -8,6 +9,7 @@
         alt="DevInventary Logo"
       />
     </div>
+
     <!-- BUTTONS toggleSideBar=true-->
     <div class="btns-div" v-show="toggleSideBar">
       <SideBarButtons
@@ -40,6 +42,7 @@
         :method2="emprestaItens"
       />
     </div>
+
     <!-- BUTTONS toggleSideBar=false-->
     <div class="text-center" v-show="!toggleSideBar">
       <div class="col mb-5">
@@ -55,6 +58,7 @@
         <SmallIcon icon="fa-solid fa-share-nodes" :method="emprestaItens" />
       </div>
     </div>
+
     <!-- div geral do switch -->
     <div id="switchDiv">
       <!-- body do switch -->
@@ -63,66 +67,79 @@
         <div id="switchCircle"></div>
       </div>
     </div>
+
   </div>
 </template>
 <script>
-import SideBarButtons from "./SideBarButtons.vue";
-import SmallIcon from "../SmallIcon.vue";
+import SideBarButtons from "./SideBarButtons.vue"
+import SmallIcon from "../SmallIcon.vue"
 
 export default {
-  components: { SideBarButtons, SmallIcon },
+
+  components: {
+
+    SideBarButtons, 
+    SmallIcon
+
+    },
   methods: {
+
     // Hide/show sidebar
     toggleSwitch() {
+
       // Switch circle
-      let switchCircle = document.getElementById("switchCircle");
-      let switchDiv = document.getElementById("switchDiv");
-      let logoImg = document.getElementById("logo");
+      let switchCircle = document.getElementById("switchCircle")
+      let switchDiv = document.getElementById("switchDiv")
+      let logoImg = document.getElementById("logo")
+
       // Se não tiver classe switchCircle, adiciona
       if (switchCircle.className != "switchCircle") {
-        switchCircle.className = "switchCircle";
-        switchDiv.style.justifyContent = "center";
-        logoImg.style.width = "60px";
+        switchCircle.className = "switchCircle"
+        switchDiv.style.justifyContent = "center"
+        logoImg.style.width = "60px"
+
       } else {
         // Se houver, apaga
-        switchCircle.className = "";
-        switchDiv.style.justifyContent = "right";
-        logoImg.style.width = "auto";
+        switchCircle.className = ""
+        switchDiv.style.justifyContent = "right"
+        logoImg.style.width = "auto"
       }
-      this.$store.commit("template/controlSideBar");
+      this.$store.commit("template/controlSideBar")
     },
     inventario() {
-      this.$router.push("/users/inventario");
+      this.$router.push("/users/inventario")
     },
     sair() {
-      this.$store.commit("auth/logOutUser");
-      this.$toast.success(this.$store.getters["auth/setLogoutMsg"]);
-      this.$router.push("/");
+      this.$store.commit("auth/logOutUser")
+      this.$toast.info(this.$store.getters["auth/setLogoutMsg"], {position: 'top-left'})
+      this.$router.push("/")
     },
     cadastraUser() {
-      this.$router.push("/users/cadastro-usuario");
+      this.$router.push("/users/cadastro-colaborador")
     },
     listaUsers() {
-      this.$router.push("/users/lista-usuarios");
+      this.$router.push("/users/colaboradores")
     },
     cadastraItens() {
-      this.$router.push("/users/cadastro-item");
+      this.$router.push("/users/cadastro-item")
     },
     emprestaItens() {
-      this.$router.push("/users/emprestar");
+      this.$router.push("/users/emprestar")
     },
   },
   computed: {
+
     // Retorna o estilo do sideBar
     sidebar() {
-      return this.$store.getters["template/sidebar"];
+      return this.$store.getters["template/sidebar"]
     },
     // Controla o sideBar e tipos de botões
     toggleSideBar() {
-      return this.$store.state.template.toggleSideBar;
-    },
+      return this.$store.state.template.toggleSideBar
+    }
+
   },
-};
+}
 </script>
 <style scoped>
 label {

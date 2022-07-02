@@ -1,6 +1,7 @@
 <template>
     <div class="container p-5">
     <h3>Buscar por patrimônio</h3>
+
         <!-- BARRA DE BUSCA -->
         <div class="container p-4">
         <div class="container">
@@ -23,6 +24,7 @@
         <div class="container mt-5 mb-5">
             <h3>Situação atual</h3>
         </div>
+
         <!-- TABELA DE ITENS e situação -->
         <div class="container">
             <table class="table table-hover table-borderless align-middle">
@@ -77,8 +79,10 @@
             </table>
         </div>
         </div>
+
         <!-- Modal para edição de item -->
         <ModalEditItem></ModalEditItem>
+
     </div>
 </template>
 
@@ -129,7 +133,7 @@ export default {
             }
         },
         // Chamado pelo select input da tabela
-        emprestar(item, index) {
+        async emprestar(item, index) {
 
             // valor do select input
             let nome = document.getElementById(`${index}`).value
@@ -138,11 +142,12 @@ export default {
                 itemTo: nome,
                 itemWhich: item
             })
-            let msg1 = "Item disponível"
-            let msg2 = `Item emprestado para ${nome}.`
-            this.$toast.success(nome !== msg1 ? msg2 : msg1)
+            let msg1 = "O item está disponível"
+            let msg2 = `Item emprestado para ${nome}`
+            this.$toast.info(nome !== msg1 ? msg2 : msg1, {position: 'top'})
             location.reload()
             this.$loading.show()
+            
         },
         editItem(num) {
             this.$store.commit('itens/editItem', num)
@@ -155,7 +160,7 @@ export default {
         }
     },
     // Carrega as stores com o localstorage
-    // Seta items
+    // Popula items
     mounted() {
         this.$store.commit('itens/getItens')
         this.$store.commit('collaborators/getCollabs')
